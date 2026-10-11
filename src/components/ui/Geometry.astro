@@ -12,9 +12,9 @@ interface Props {
 
 const { shape, class: className } = Astro.props;
 
-const ink = '#2A3242';
-const faint = '#B8C3D4';
-const blue = '#2B7BF6';
+const ink = '#333333';
+const faint = '#C4C4C4';
+const blue = '#111111';
 
 // Isometric cube with its top-left-front corner at (x, y) and edge length s.
 const iso = (x: number, y: number, s: number) => {
@@ -85,9 +85,9 @@ const scripts = ['अ', 'அ', 'অ', 'అ', 'અ', 'ಅ', 'ਅ', 'അ', 'A'];
             <path d={c.right} fill="#fff" />
           </>
         ))}
-        <path d={c2.top} fill="#5D9BFF" stroke="#2B7BF6" />
-        <path d={c2.left} fill="#2B7BF6" stroke="#2B7BF6" />
-        <path d={c2.right} fill="#1A5FD0" stroke="#1A5FD0" />
+        <path d={c2.top} fill="#4A4A4A" stroke="#111111" />
+        <path d={c2.left} fill="#111111" stroke="#111111" />
+        <path d={c2.right} fill="#2A2A2A" stroke="#2A2A2A" />
       </g>
     )
   }

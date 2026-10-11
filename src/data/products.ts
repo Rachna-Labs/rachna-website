@@ -77,8 +77,8 @@ export const products: Product[] = [
     schemaCategory: 'LifestyleApplication',
   },
   {
-    key: 'paid',
-    name: 'Paid',
+    key: 'balance',
+    name: 'Balance',
     hindi: 'पैसा',
     category: 'Finance',
     tagline: 'Your rupees, clearly',
@@ -105,21 +105,6 @@ export const products: Product[] = [
     platforms: 'iPhone & Android',
     tint: ['#EE5A8F', '#B0154F'],
     schemaCategory: 'BusinessApplication',
-  },
-  {
-    key: 'sakhi',
-    name: 'Sakhi',
-    hindi: 'सखी',
-    category: "Women's health",
-    tagline: 'A gentle menstrual companion',
-    description: 'Track your cycle, see what is coming and note how you feel, in a companion made with Indian women in mind.',
-    features: ['Period predictions', 'Symptoms, mood & sleep', 'Works offline'],
-    status: 'Live',
-    url: 'https://apps.apple.com/app/id6747256551',
-    urlLabel: 'Get it on the App Store',
-    platforms: 'iPhone',
-    tint: ['#F0609A', '#D1336F'],
-    schemaCategory: 'HealthApplication',
   },
 ];
 

@@ -30,7 +30,6 @@ export function baseSchemas(siteUrl: URL): Schema[] {
       'Education software',
       'Personal safety software',
       'Personal finance software',
-      "Women's health software",
       'Product design',
     ],
     member: site.partners.map((p) => ({

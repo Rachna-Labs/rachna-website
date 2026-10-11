@@ -55,7 +55,7 @@ export const site: SiteConfig = {
   tagline: 'Technology, crafted around people.',
   title: 'Rachna Labs (रचना) | Everyday apps, made in India',
   description:
-    'Rachna Labs (रचना) makes calm, useful apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Paid for money, Paparazi for small businesses and Sakhi for women’s health. One design language, built natively for iPhone, Android and the web.',
+    'Rachna Labs (रचना) makes calm, useful apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Balance for money and Paparazi for small businesses. One design language, built natively for iPhone, Android and the web.',
   keywords: [
     'Rachna Labs',
     'रचना',
@@ -63,8 +63,7 @@ export const site: SiteConfig = {
     'Indian app company',
     'made in India apps',
     'Plate food logging app India',
-    'Sakhi menstrual companion',
-    'Paid finance app',
+    'Balance finance app',
     'Beside safety app',
     'Grokul education app',
     'Paparazi marketing app',

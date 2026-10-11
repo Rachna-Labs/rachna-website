@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /*
- * Rachna Labs design system. A research lab, not an app: white page, soft blue-grey tiles
- * that run nearly edge to edge (Apple's tile layout), clean Inter type with one key word in
- * blue, and visuals drawn in code: wireframe geometry, node diagrams and dotted grids.
+ * Rachna Labs design system. A research lab, not an app: white page, soft grey tiles, clean
+ * Inter type, and black as the only accent (buttons, the key word, small highlights).
+ * Visuals are drawn in code: wireframe geometry, a dotted sphere and dotted grids.
  */
 @theme {
   --font-sans: "Inter Variable", "Noto Sans Devanagari Variable", "Noto Sans Tamil Variable", "Noto Sans Bengali Variable", "Noto Sans Telugu Variable", "Noto Sans Gujarati Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -11,23 +11,24 @@
   --font-rozha: "Rozha One", Georgia, serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-ink: #0E1525;
-  --color-graphite: #2A3242;
-  --color-foreground: #0E1525;
-  --color-muted-foreground: #6A7385;
-  --color-line: #E3E8F0;
-  --color-border: #E3E8F0;
+  --color-ink: #111111;
+  --color-graphite: #333333;
+  --color-foreground: #111111;
+  --color-muted-foreground: #6B6B6B;
+  --color-line: #E6E6E6;
+  --color-border: #E6E6E6;
   --color-page: #FFFFFF;
   --color-panel: #FFFFFF;
-  --color-tile: #F3F6FB;
-  --color-mist: #F7F9FC;
+  --color-tile: #F4F4F4;
+  --color-mist: #F8F8F8;
 
-  --color-blue: #2B7BF6;
-  --color-blue-deep: #1A5FD0;
-  --color-blue-soft: #E7F0FE;
-  --color-sky: #8DB9FA;
-  --color-primary: #2B7BF6;
-  --color-accent: #2B7BF6;
+  /* Accent: black. (The token keeps its old name so every utility follows.) */
+  --color-blue: #111111;
+  --color-blue-deep: #000000;
+  --color-blue-soft: #EDEDED;
+  --color-sky: #BDBDBD;
+  --color-primary: #111111;
+  --color-accent: #111111;
 }
 
 @layer base {
@@ -70,14 +71,14 @@
     @apply rounded-[28px] bg-tile;
   }
   .card {
-    @apply rounded-[20px] bg-panel shadow-[0_1px_2px_rgba(14,21,37,0.04),0_10px_30px_-18px_rgba(14,21,37,0.18)];
+    @apply rounded-[20px] border border-line bg-panel;
   }
   .fade-dots {
     -webkit-mask-image: radial-gradient(closest-side, #000 40%, transparent);
     mask-image: radial-gradient(closest-side, #000 40%, transparent);
   }
   .dots {
-    background-image: radial-gradient(circle, #d3dbe7 1px, transparent 1.2px);
+    background-image: radial-gradient(circle, #d6d6d6 1px, transparent 1.2px);
     background-size: 14px 14px;
   }
 
@@ -100,7 +101,7 @@
 
   /* Small label chip: white pill with a blue icon square. */
   .chip {
-    @apply inline-flex items-center gap-2 rounded-full bg-panel py-1 pr-3.5 pl-1 text-[12px] text-muted-foreground shadow-[0_1px_2px_rgba(14,21,37,0.05),0_6px_16px_-10px_rgba(14,21,37,0.2)];
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-panel py-1 pr-3.5 pl-1 text-[12px] text-muted-foreground;
   }
   .chip-icon {
     @apply flex size-6 items-center justify-center rounded-full bg-blue-soft text-blue;
@@ -140,7 +141,7 @@
   }
   select.input {
     @apply appearance-none bg-no-repeat pr-9;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%236A7385' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-position: right 0.85rem center;
   }
 
