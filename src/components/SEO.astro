@@ -80,7 +80,10 @@ const graph = JSON.stringify({
 {xHandle && <meta name="twitter:site" content={xHandle} />}
 
 <!-- Icons & app -->
+<!-- The favicon follows the browser theme: black on light, white on dark. -->
 <link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/favicon-light.png" type="image/png" media="(prefers-color-scheme: light)" />
+<link rel="icon" href="/favicon-dark.png" type="image/png" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />

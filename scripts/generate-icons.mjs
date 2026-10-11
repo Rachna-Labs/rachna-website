@@ -1,29 +1,38 @@
-// Generates the favicon set, PWA icons and the Open Graph image from SVG sources.
+// Generates the favicon set, PWA icons and the Open Graph image from the brand mark.
 // Usage: npm run icons   (optionally SITE_URL=https://yourdomain.com npm run icons)
+//
+// The favicon follows the browser theme: favicon.svg switches colour with
+// prefers-color-scheme, and favicon-light.png / favicon-dark.png are linked with media
+// queries for browsers that don't use the SVG.
 import sharp from 'sharp';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const out = (file) => fileURLToPath(new URL(`../public/${file}`, import.meta.url));
 const domain = (process.env.SITE_URL ?? 'https://www.rachnalabs.com').replace(/^https?:\/\//, '').replace(/\/$/, '');
 
-const R_PATH = 'M11 23.5V8.5h6a4.5 4.5 0 0 1 0 9h-6m5.2 0 5.3 6';
+// The mark's drawing, in its own 696 x 796 coordinates.
+const source = await readFile(new URL('../src/assets/brand/mark.svg', import.meta.url), 'utf8');
+const drawing = source.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+const W = 696;
+const H = 796;
 
-/** The Rachna Labs mark: an "R" monogram with a spark, on a violet tile. */
-function mark({ size, rounded = true, scale = 1 }) {
+/** The mark centred on a square canvas, `scale` of its height, on an optional background. */
+function icon({ size, color = '#111111', background, scale = 0.8, radius = 0 }) {
+  const box = Math.max(W, H) / scale;
+  const x = (box - W) / 2;
+  const y = (box - H) / 2;
   const dims = size ? `width="${size}" height="${size}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" ${dims} viewBox="0 0 32 32">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/>
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="${rounded ? 9 : 0}" fill="url(#g)"/>
-  <g transform="translate(16 16) scale(${scale}) translate(-16 -16)">
-    <path d="${R_PATH}" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="23.5" cy="8.5" r="2" fill="#EDE9FE"/>
-  </g>
-</svg>`;
+  const bg = background ? `<rect width="${box}" height="${box}" rx="${radius * box}" fill="${background}"/>` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" ${dims} viewBox="0 0 ${box} ${box}">${bg}<g transform="translate(${x} ${y})" fill="${color}">${drawing}</g></svg>`;
+}
+
+/** Favicon that is black in a light browser theme and white in a dark one. */
+function adaptiveFavicon() {
+  const box = Math.max(W, H) / 0.9;
+  const x = (box - W) / 2;
+  const y = (box - H) / 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${box} ${box}"><style>g{fill:#111111}@media (prefers-color-scheme:dark){g{fill:#ffffff}}</style><g transform="translate(${x} ${y})">${drawing}</g></svg>`;
 }
 
 const png = (svg) => sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer();
@@ -49,72 +58,34 @@ function toIco(images) {
   return Buffer.concat([header, dir, ...images.map((img) => img.buf)]);
 }
 
-const font = `font-family="'Plus Jakarta Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"`;
-
-// App tiles (tasks, money, health, notes, habits) in each app's accent colour, plus a "more coming" tile.
-const habitDots = [0, 1, 2]
-  .flatMap((row) => [0, 1, 2].map((col) => `<circle cx="${30 + col * 14}" cy="${30 + row * 14}" r="5" fill="#fff" fill-opacity="${(row + col) % 3 === 2 ? 0.4 : 1}"/>`))
-  .join('');
-const glyphs = [
-  '<rect x="22" y="24" width="14" height="14" rx="4" fill="#fff"/><path d="M42 31h24" stroke="#fff" stroke-width="5" stroke-linecap="round"/><rect x="23" y="49" width="12" height="12" rx="4" stroke="#fff" stroke-width="3.5" fill="none"/><path d="M42 55h18" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
-  '<rect x="20" y="30" width="48" height="32" rx="8" stroke="#fff" stroke-width="5" fill="none"/><path d="M27 30l23-9 5 9" stroke="#fff" stroke-width="5" stroke-linejoin="round" fill="none"/><circle cx="57" cy="46" r="4" fill="#fff"/>',
-  '<path d="M18 46h13l6-13 9 26 6-13h18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
-  '<rect x="28" y="22" width="32" height="44" rx="5" stroke="#fff" stroke-width="5" fill="none"/><path d="M36 36h16M36 48h10" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
-  habitDots,
-  '<path d="M44 30v28M30 44h28" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
-];
-const tileColors = ['#7C3AED', '#059669', '#E11D48', '#0284C7', '#F59E0B', '#1B1A22'];
-const productTiles = glyphs
-  .map((glyph, i) => {
-    const x = (i % 3) * 110;
-    const y = Math.floor(i / 3) * 110;
-    return `<g transform="translate(${x} ${y})"><rect width="88" height="88" rx="22" fill="${tileColors[i]}"/>${glyph}</g>`;
-  })
-  .join('');
+const font = `font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"`;
+const markInOg = icon({ color: '#111111', scale: 1 }).replace('<svg', '<svg x="80" y="72" width="56" height="64"');
 
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.4" fill="#1B1A22" fill-opacity="0.08"/>
-    </pattern>
-    <radialGradient id="glow" cx="0.82" cy="0.18" r="0.6">
-      <stop offset="0" stop-color="#A78BFA" stop-opacity="0.20"/>
-      <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
-      <stop stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#FBFAFF"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-
-  <g transform="translate(80 70)">${mark({ size: 60 }).replace('<svg', '<svg x="0" y="0"')}</g>
-  <text x="156" y="111" ${font} font-size="30" font-weight="700" fill="#1B1A22">Rachna <tspan fill="#A1A1AA" font-weight="500">Labs</tspan></text>
-
-  <text x="80" y="290" ${font} font-size="62" font-weight="800" letter-spacing="-1.5" fill="#1B1A22">We build tools that</text>
-  <text x="80" y="366" ${font} font-size="62" font-weight="800" letter-spacing="-1.5" fill="#7C3AED">make life simpler.</text>
-  <text x="80" y="430" ${font} font-size="25" fill="#71717A">Apps for tasks, money, health &amp; more · Made in India</text>
-
-  <rect x="80" y="500" width="${domain.length * 13 + 70}" height="54" rx="27" fill="#FFFFFF" stroke="#E7E5EC" stroke-width="2"/>
-  <circle cx="110" cy="527" r="7" fill="#10B981"/>
-  <text x="128" y="535" ${font} font-size="22" font-weight="600" fill="#3F3F46">${domain}</text>
-
-  <g transform="translate(820 190)">
-    <rect x="-24" y="-24" width="356" height="246" rx="28" fill="#FFFFFF" stroke="#E7E5EC" stroke-width="2"/>
-    ${productTiles}
-  </g>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  ${markInOg}
+  <text x="150" y="114" ${font} font-size="30" font-weight="500" fill="#111111">Rachna <tspan fill="#6B6B6B" font-weight="300">Labs</tspan></text>
+  <text x="80" y="300" ${font} font-size="68" font-weight="300" letter-spacing="-2" fill="#111111">Research that turns into</text>
+  <text x="80" y="380" ${font} font-size="68" font-weight="300" letter-spacing="-2" fill="#111111">technology for <tspan font-style="italic">people</tspan></text>
+  <text x="80" y="450" ${font} font-size="26" fill="#6B6B6B">An Indian research and product lab</text>
+  <text x="80" y="560" ${font} font-size="22" fill="#6B6B6B">${domain}</text>
+  <g opacity="0.06" transform="translate(800 150)">${icon({ size: 420, scale: 1 }).replace('<svg', '<svg x="0" y="0"')}</g>
 </svg>`;
 
-const [ico16, ico32, ico48] = await Promise.all([16, 32, 48].map((size) => png(mark({ size }))));
+const favLight = (size) => png(icon({ size, color: '#111111', scale: 0.9 }));
+const favDark = (size) => png(icon({ size, color: '#FFFFFF', scale: 0.9 }));
+const [ico16, ico32, ico48] = await Promise.all([16, 32, 48].map(favLight));
 
 await Promise.all([
-  writeFile(out('favicon.svg'), mark({})),
+  writeFile(out('favicon.svg'), adaptiveFavicon()),
   writeFile(out('favicon.ico'), toIco([{ size: 16, buf: ico16 }, { size: 32, buf: ico32 }, { size: 48, buf: ico48 }])),
-  png(mark({ size: 180, rounded: false, scale: 0.82 })).then((b) => writeFile(out('apple-touch-icon.png'), b)),
-  png(mark({ size: 192 })).then((b) => writeFile(out('icon-192.png'), b)),
-  png(mark({ size: 512 })).then((b) => writeFile(out('icon-512.png'), b)),
-  png(mark({ size: 512, rounded: false, scale: 0.7 })).then((b) => writeFile(out('icon-maskable-512.png'), b)),
+  favLight(64).then((b) => writeFile(out('favicon-light.png'), b)),
+  favDark(64).then((b) => writeFile(out('favicon-dark.png'), b)),
+  png(icon({ size: 180, background: '#FFFFFF', scale: 0.62 })).then((b) => writeFile(out('apple-touch-icon.png'), b)),
+  png(icon({ size: 192, background: '#FFFFFF', scale: 0.66, radius: 0.22 })).then((b) => writeFile(out('icon-192.png'), b)),
+  png(icon({ size: 512, background: '#FFFFFF', scale: 0.66, radius: 0.22 })).then((b) => writeFile(out('icon-512.png'), b)),
+  png(icon({ size: 512, background: '#FFFFFF', scale: 0.5 })).then((b) => writeFile(out('icon-maskable-512.png'), b)),
   png(ogSvg).then((b) => writeFile(out('og-image.png'), b)),
 ]);
 
-console.log('Generated favicon.svg, favicon.ico, apple-touch-icon.png, icon-192/512.png, icon-maskable-512.png, og-image.png');
+console.log('Generated favicon.svg, favicon.ico, favicon-light/dark.png, apple-touch-icon.png, icon-192/512.png, icon-maskable-512.png, og-image.png');

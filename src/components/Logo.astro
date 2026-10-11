@@ -1,29 +1,27 @@
 ---
 /**
- * The Rachna Labs logo. The mark is an R whose two feet end in nodes: a letter that is also
- * a small network, for a lab that connects research to the people it serves.
+ * The Rachna Labs logo: the sprout mark, a seedling whose stem ends in a pen nib, with the
+ * wordmark. The mark takes the text colour, so it is black on light and white on dark.
  */
+import mark from '../assets/brand/mark.svg?raw';
+
 interface Props {
   class?: string;
   href?: string;
 }
 
 const { class: className, href = '/' } = Astro.props;
-const id = `logo-${Math.random().toString(36).slice(2, 7)}`;
 ---
 
 <a href={href} class:list={['inline-flex items-center gap-2.5 text-ink', className]} aria-label="Rachna Labs home">
-  <svg viewBox="0 0 32 32" class="size-9 shrink-0" aria-hidden="true">
-    <defs>
-      <linearGradient id={id} x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#3A3A3A"></stop>
-        <stop offset="1" stop-color="#000000"></stop>
-      </linearGradient>
-    </defs>
-    <rect width="32" height="32" rx="9" fill={`url(#${id})`}></rect>
-    <path d="M11.5 23V9.5H17a4.25 4.25 0 0 1 0 8.5h-5.5M16.5 18l5 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
-    <circle cx="11.5" cy="23" r="2.2" fill="#fff"></circle>
-    <circle cx="21.5" cy="23" r="2.2" fill="#fff"></circle>
-  </svg>
+  <span class="logo-mark block h-8 w-7 shrink-0" aria-hidden="true" set:html={mark} />
   <span class="text-[18px] leading-none tracking-[-0.02em]"><span class="font-medium">Rachna</span> <span class="font-light text-muted-foreground">Labs</span></span>
 </a>
+
+<style>
+  .logo-mark :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
