@@ -1,0 +1,44 @@
+---
+import { ArrowUpRight, Layers } from '@lucide/astro';
+import { products, productCta, statusLabel } from '../../data/products';
+---
+
+<section id="work" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="grid gap-10 px-2 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-24 lg:px-10">
+      <div data-reveal>
+        <p class="chip"><span class="chip-icon"><Layers class="size-3.5" /></span>Our work</p>
+        <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Research that becomes <span class="accent-italic">real products</span></h2>
+        <p class="section-lead mt-5 max-w-md">
+          When an idea proves itself, we build it into a product people can use every day. Each one shares our design system, our principles and our standard of care.
+        </p>
+      </div>
+
+      <ul class="divide-y divide-line border-y border-line" data-reveal>
+        {
+          products.map((p) => {
+            const cta = productCta(p);
+            return (
+              <li>
+                <a
+                  href={cta.href}
+                  {...(cta.external ? { target: '_blank', rel: 'noopener noreferrer' } : { 'data-topic': 'Product enquiry', 'data-product': p.name })}
+                  class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-5 sm:grid-cols-[180px_1fr_auto_auto]"
+                >
+                  <span class="text-[19px] font-light tracking-[-0.01em] group-hover:text-blue">{p.name}</span>
+                  <span class="order-3 col-span-2 text-[14px] text-muted-foreground sm:order-none sm:col-span-1">{p.tagline}</span>
+                  <span class:list={['hidden rounded-full px-2.5 py-1 text-[12px] sm:inline', p.status === 'Live' ? 'bg-blue text-white' : 'bg-tile text-graphite']}>
+                    {statusLabel[p.status]}
+                  </span>
+                  <span class="flex size-9 items-center justify-center rounded-full border border-line text-graphite transition-colors group-hover:border-blue group-hover:bg-blue group-hover:text-white">
+                    <ArrowUpRight class="size-4" />
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </div>
+</section>

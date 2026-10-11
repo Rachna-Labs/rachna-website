@@ -1,0 +1,78 @@
+---
+import { FlaskConical } from '@lucide/astro';
+import Geometry from '../ui/Geometry.astro';
+
+const areas = [
+  {
+    shape: 'scripts' as const,
+    title: 'Language and AI',
+    body: 'Technology that understands Hindi, Tamil, Bengali and code-mixed speech, the way India actually talks.',
+    tags: ['Multilingual', 'Speech', 'Search'],
+  },
+  {
+    shape: 'molecule' as const,
+    title: 'Food and nutrition',
+    body: 'Open, sourced data on Indian food, so nutrition fits a thali and is measured in katoris and rotis.',
+    tags: ['Open data', 'Sourced', 'Indian portions'],
+  },
+  {
+    shape: 'network' as const,
+    title: 'Learning',
+    body: 'Lessons that adapt to a student’s language and pace, built for classrooms and homes across India.',
+    tags: ['Adaptive', 'Bilingual', 'Low data'],
+  },
+  {
+    shape: 'shield' as const,
+    title: 'Safety and wellbeing',
+    body: 'Calm tools that help people look after themselves and the people they love, privately.',
+    tags: ['Private', 'Women’s health', 'Family'],
+  },
+  {
+    shape: 'rupee' as const,
+    title: 'Everyday money',
+    body: 'Clear, honest ways to see and plan money in rupees, for households and small businesses.',
+    tags: ['Households', 'Small business', '₹ first'],
+  },
+];
+---
+
+<section id="research" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="grid gap-6 px-2 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-24 lg:px-10" data-reveal>
+      <div>
+        <p class="chip"><span class="chip-icon"><FlaskConical class="size-3.5" /></span>Research areas</p>
+        <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">
+          Everything we explore, <span class="accent-italic">in one lab</span>
+        </h2>
+      </div>
+      <p class="section-lead self-end text-[16px] lg:max-w-md">
+        Five areas of everyday life, studied together, so what we learn in one makes the others better.
+      </p>
+    </div>
+
+    <ol class="mx-2 mt-14 divide-y divide-line border-y border-line sm:mx-6 lg:mx-10">
+      {
+        areas.map((a, i) => (
+          <li class="grid items-center gap-6 py-10 md:grid-cols-[4rem_1fr_220px] md:gap-10" data-reveal>
+            <span class="text-[15px] text-blue tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="text-[26px] leading-tight font-light tracking-[-0.02em]">{a.title}</h3>
+              <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{a.body}</p>
+              <ul class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-graphite">
+                {a.tags.map((t) => (
+                  <li class="flex items-center gap-2">
+                    <span class="size-1 rounded-full bg-blue" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="dots fade-dots flex h-44 items-center justify-center">
+              <Geometry shape={a.shape} class="h-40 w-auto max-w-full" />
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

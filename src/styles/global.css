@@ -1,59 +1,54 @@
 @import "tailwindcss";
 
 /*
- * Rachna Labs design tokens: white and soft-grey canvases, near-black type and pill buttons,
- * with colour coming only from the Indian palette (sindoor, haldi, genda, rani, neel, mor,
- * mehendi). Each section can set its own theme (see the themes below the components).
+ * Rachna Labs design system. A research lab, not an app: white page, soft blue-grey tiles
+ * that run nearly edge to edge (Apple's tile layout), clean Inter type with one key word in
+ * blue, and visuals drawn in code: wireframe geometry, node diagrams and dotted grids.
  */
 @theme {
   --font-sans: "Inter Variable", "Noto Sans Devanagari Variable", "Noto Sans Tamil Variable", "Noto Sans Bengali Variable", "Noto Sans Telugu Variable", "Noto Sans Gujarati Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Inter Tight Variable", "Noto Sans Devanagari Variable", "Noto Sans Tamil Variable", "Noto Sans Bengali Variable", "Noto Sans Telugu Variable", "Noto Sans Gujarati Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter Variable", "Noto Sans Devanagari Variable", ui-sans-serif, system-ui, sans-serif;
   --font-rozha: "Rozha One", Georgia, serif;
-  --font-serif: "Instrument Serif", "Noto Serif Devanagari Variable", "Noto Serif Tamil Variable", "Noto Serif Bengali Variable", "Noto Serif Telugu Variable", "Noto Serif Gujarati Variable", Georgia, serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-background: #FFFFFF;
-  --color-surface: #FFFFFF;
-  --color-card: #F5F5F7;
-  --color-card-strong: #E8E8ED;
-  --color-foreground: #1D1D1F;
-  --color-ink: #1D1D1F;
-  --color-muted-foreground: #6E6E73;
-  --color-border: #D2D2D7;
+  --color-ink: #0E1525;
+  --color-graphite: #2A3242;
+  --color-foreground: #0E1525;
+  --color-muted-foreground: #6A7385;
+  --color-line: #E3E8F0;
+  --color-border: #E3E8F0;
+  --color-page: #FFFFFF;
+  --color-panel: #FFFFFF;
+  --color-tile: #F3F6FB;
+  --color-mist: #F7F9FC;
 
-  --color-sindoor: #E0532F;
-  --color-haldi: #F2B230;
-  --color-genda: #EE8524;
-  --color-rani: #D1336F;
-  --color-gulabi: #F3A6C2;
-  --color-neel: #3546A5;
-  --color-mor: #0E8582;
-  --color-mehendi: #5E8C31;
-  --color-kesar: #F6C27A;
-
-  --color-primary: #1D1D1F;
-  --color-accent: #E0532F;
+  --color-blue: #2B7BF6;
+  --color-blue-deep: #1A5FD0;
+  --color-blue-soft: #E7F0FE;
+  --color-sky: #8DB9FA;
+  --color-primary: #2B7BF6;
+  --color-accent: #2B7BF6;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply font-sans antialiased;
-    font-feature-settings: "cv11", "ss01";
+    @apply bg-page font-sans text-ink antialiased;
+    font-feature-settings: "cv11", "ss03";
   }
   ::selection {
-    background: var(--color-kesar);
-    color: var(--color-ink);
+    background: var(--color-blue-soft);
+    color: var(--color-blue-deep);
   }
   :focus-visible {
-    outline: 2px solid var(--color-sindoor);
-    outline-offset: 3px;
-    border-radius: 10px;
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+    border-radius: 8px;
   }
   h1, h2, h3, h4 {
     text-wrap: balance;
@@ -64,242 +59,109 @@
 }
 
 @layer components {
+  /* Apple-style: wide content, small gutters, tiles separated by thin gaps. */
   .container-x {
-    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1400px] px-3 sm:px-4 lg:px-5;
+  }
+  .container-text {
+    @apply mx-auto w-full max-w-[1100px] px-5;
+  }
+  .tile {
+    @apply rounded-[28px] bg-tile;
+  }
+  .card {
+    @apply rounded-[20px] bg-panel shadow-[0_1px_2px_rgba(14,21,37,0.04),0_10px_30px_-18px_rgba(14,21,37,0.18)];
+  }
+  .fade-dots {
+    -webkit-mask-image: radial-gradient(closest-side, #000 40%, transparent);
+    mask-image: radial-gradient(closest-side, #000 40%, transparent);
+  }
+  .dots {
+    background-image: radial-gradient(circle, #d3dbe7 1px, transparent 1.2px);
+    background-size: 14px 14px;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 select-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-[12px] text-[14px] font-medium whitespace-nowrap transition-colors duration-200 select-none;
   }
   .btn-lg { @apply h-12 px-6 text-[15px]; }
-  .btn-md { @apply h-10 px-5; }
+  .btn-md { @apply h-11 px-5; }
   .btn-sm { @apply h-9 px-4 text-[13px]; }
   .btn-primary {
-    @apply bg-ink text-white hover:bg-black;
+    @apply bg-blue text-white hover:bg-blue-deep;
   }
-  .btn-secondary,
-  .btn-outline {
-    @apply border border-border bg-surface text-ink hover:bg-card;
+  .btn-dark {
+    @apply bg-ink text-white hover:bg-graphite;
   }
-  .btn-ink {
-    background: var(--ink);
-    color: var(--page);
-    transition: transform 0.2s, background-color 0.9s, color 0.9s;
-  }
-  .btn-ink:hover {
-    transform: translateY(-1px);
-  }
-  .btn-ghost {
-    @apply text-ink/70 hover:bg-card hover:text-ink;
+  .btn-outline,
+  .btn-secondary {
+    @apply border border-line bg-panel text-ink hover:border-ink/20;
   }
 
-  .eyebrow {
-    @apply inline-flex items-center gap-2 text-[13px] font-medium text-muted-foreground;
+  /* Small label chip: white pill with a blue icon square. */
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full bg-panel py-1 pr-3.5 pl-1 text-[12px] text-muted-foreground shadow-[0_1px_2px_rgba(14,21,37,0.05),0_6px_16px_-10px_rgba(14,21,37,0.2)];
   }
-  .eyebrow::before {
-    content: "";
-    @apply size-1.5 rounded-full bg-sindoor;
+  .chip-icon {
+    @apply flex size-6 items-center justify-center rounded-full bg-blue-soft text-blue;
   }
 
   .section-title {
-    @apply font-display text-[2.6rem] leading-[1.05] font-semibold tracking-[-0.04em] text-ink sm:text-[4rem];
+    @apply font-display text-[2rem] leading-[1.12] font-normal tracking-[-0.03em] text-ink sm:text-[2.6rem];
   }
-  .text-gradient {
-    background: linear-gradient(90deg, var(--color-sindoor), var(--color-genda) 30%, var(--color-haldi) 50%, var(--color-rani) 72%, var(--color-neel));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .accent {
+    @apply text-blue;
   }
-  .link-apple {
-    @apply inline-flex items-center gap-0.5 text-[17px] text-[#C6431F] hover:underline hover:underline-offset-4;
+  .accent-italic {
+    @apply text-blue italic;
   }
   .section-lead {
-    @apply text-base leading-relaxed text-muted-foreground sm:text-lg;
+    @apply text-[15px] leading-relaxed text-muted-foreground;
   }
-
-  .card {
-    @apply rounded-[28px] bg-card;
+  .eyebrow {
+    @apply text-[12px] font-medium tracking-[0.12em] text-muted-foreground uppercase;
   }
-
-  /* Frosted glass, after Plate: blur, a light top edge, a soft shadow, no outline. */
-  .glass {
-    background: var(--glass);
-    -webkit-backdrop-filter: blur(22px) saturate(1.5);
-    backdrop-filter: blur(22px) saturate(1.5);
-    box-shadow:
-      inset 0 1px 0 var(--glass-edge),
-      0 24px 60px -32px rgb(0 0 0 / 0.35);
+  .panel {
+    @apply rounded-[20px] border border-line bg-panel;
   }
-  .text-muted {
-    color: var(--muted);
-  }
-  .btn-accent {
-    background: var(--accent);
-    color: var(--accent-ink);
-    transition: transform 0.2s, filter 0.2s, background-color 0.9s;
-  }
-  .btn-accent:hover {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-  }
-  .btn-glass {
-    background: var(--glass);
-    -webkit-backdrop-filter: blur(22px) saturate(1.5);
-    backdrop-filter: blur(22px) saturate(1.5);
-    box-shadow: inset 0 1px 0 var(--glass-edge);
-    color: var(--ink);
-  }
-  .card-hover {
-    @apply transition-colors duration-300 hover:bg-card-strong;
-  }
-
-  .link-arrow {
-    @apply inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-border decoration-1 underline-offset-[6px] transition-colors hover:decoration-ink;
+  .text-link {
+    @apply inline-flex items-center gap-1.5 text-[14px] font-medium text-blue hover:text-blue-deep;
   }
 
   /* Form controls */
   .label {
-    @apply mb-1.5 block text-[13px] font-medium text-ink/80;
+    @apply mb-1.5 block text-[12px] font-medium text-graphite;
   }
   .input {
-    @apply h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-[15px] text-ink transition placeholder:text-ink/35 hover:border-[#D6CFC3] focus:border-ink focus:ring-4 focus:ring-card focus:outline-none;
+    @apply h-11 w-full rounded-[12px] border border-line bg-panel px-3.5 text-[14px] text-ink transition-colors placeholder:text-ink/35 hover:border-ink/20 focus:border-blue focus:ring-4 focus:ring-blue-soft focus:outline-none;
   }
   textarea.input {
     @apply h-auto py-3 leading-relaxed;
   }
   select.input {
-    @apply appearance-none bg-no-repeat pr-10;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236F6862' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    @apply appearance-none bg-no-repeat pr-9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%236A7385' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-position: right 0.85rem center;
   }
 
   /* Legal / long-form prose */
   .prose-legal {
-    @apply text-[15px] leading-7 text-ink/80;
+    @apply text-[15px] leading-7 text-graphite;
   }
   .prose-legal h2 {
     @apply mt-12 mb-4 scroll-mt-28 font-display text-2xl font-medium tracking-tight text-ink;
   }
   .prose-legal h3 {
-    @apply mt-8 mb-3 text-base font-semibold text-ink;
+    @apply mt-8 mb-3 text-base font-medium text-ink;
   }
   .prose-legal p { @apply my-4; }
-  .prose-legal ul { @apply my-4 list-disc space-y-2 pl-5 marker:text-sindoor; }
-  .prose-legal ol { @apply my-4 list-decimal space-y-2 pl-5 marker:text-sindoor; }
-  .prose-legal a { @apply font-medium text-ink underline decoration-border underline-offset-4 hover:decoration-ink; }
-  .prose-legal strong { @apply font-semibold text-ink; }
+  .prose-legal ul { @apply my-4 list-disc space-y-2 pl-5 marker:text-blue; }
+  .prose-legal ol { @apply my-4 list-decimal space-y-2 pl-5 marker:text-blue; }
+  .prose-legal a { @apply font-medium text-blue underline decoration-blue/30 underline-offset-4 hover:decoration-blue; }
+  .prose-legal strong { @apply font-medium text-ink; }
   .prose-legal table { @apply my-6 w-full border-collapse text-left text-sm; }
-  .prose-legal th { @apply border-b border-border bg-card px-3 py-2.5 font-semibold text-ink; }
-  .prose-legal td { @apply border-b border-border px-3 py-2.5 align-top; }
-}
-
-/*
- * Page themes. <html data-theme> changes as each section reaches the middle of the screen
- * (see BaseLayout), and the page colour and ink ease from one theme to the next.
- */
-:root,
-:root[data-theme="paper"],
-html:not(.js) [data-theme="paper"] {
-  --page: #FFFFFF;
-  --ink: #1D1B18;
-  --muted: #6B645C;
-  --accent: #E0532F;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.66);
-  --glass-edge: rgb(255 255 255 / 0.7);
-  --line: rgb(29 27 24 / 0.1);
-}
-:root[data-theme="night"],
-html:not(.js) [data-theme="night"] {
-  --page: #090A1A;
-  --ink: #F7F3EA;
-  --muted: rgb(247 243 234 / 0.62);
-  --accent: #F2B230;
-  --accent-ink: #1D1B18;
-  --glass: rgb(255 255 255 / 0.07);
-  --glass-edge: rgb(255 255 255 / 0.14);
-  --line: rgb(255 255 255 / 0.1);
-}
-:root[data-theme="sakhi"],
-html:not(.js) [data-theme="sakhi"] {
-  --page: #FCEAF0;
-  --ink: #3A0E22;
-  --muted: #86506A;
-  --accent: #D1336F;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.62);
-  --glass-edge: rgb(255 255 255 / 0.8);
-  --line: rgb(58 14 34 / 0.1);
-}
-:root[data-theme="plate"],
-html:not(.js) [data-theme="plate"] {
-  --page: #E4F4EA;
-  --ink: #10241B;
-  --muted: #4B5D54;
-  --accent: #12805A;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.62);
-  --glass-edge: rgb(255 255 255 / 0.8);
-  --line: rgb(16 36 27 / 0.1);
-}
-:root[data-theme="beside"],
-html:not(.js) [data-theme="beside"] {
-  --page: #061A1B;
-  --ink: #E8F6F4;
-  --muted: rgb(232 246 244 / 0.62);
-  --accent: #3FD1C2;
-  --accent-ink: #04201E;
-  --glass: rgb(255 255 255 / 0.07);
-  --glass-edge: rgb(255 255 255 / 0.14);
-  --line: rgb(255 255 255 / 0.1);
-}
-:root[data-theme="paid"],
-html:not(.js) [data-theme="paid"] {
-  --page: #FFF2D2;
-  --ink: #2A2008;
-  --muted: #76683F;
-  --accent: #0B6B4F;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.6);
-  --glass-edge: rgb(255 255 255 / 0.8);
-  --line: rgb(42 32 8 / 0.1);
-}
-:root[data-theme="grokul"],
-html:not(.js) [data-theme="grokul"] {
-  --page: #E7EAFB;
-  --ink: #141A3D;
-  --muted: #565E8C;
-  --accent: #3546A5;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.62);
-  --glass-edge: rgb(255 255 255 / 0.8);
-  --line: rgb(20 26 61 / 0.1);
-}
-:root[data-theme="paparazi"],
-html:not(.js) [data-theme="paparazi"] {
-  --page: #FFE7D8;
-  --ink: #3A160A;
-  --muted: #8A5A48;
-  --accent: #BE185D;
-  --accent-ink: #FFFFFF;
-  --glass: rgb(255 255 255 / 0.6);
-  --glass-edge: rgb(255 255 255 / 0.8);
-  --line: rgb(58 22 10 / 0.1);
-}
-
-/*
- * Without JS each themed section paints itself in its own theme. With JS only <html> carries
- * the theme, so text, glass and page colour change together as the page eases between themes.
- */
-html:not(.js) section[data-theme] {
-  background-color: var(--page);
-  color: var(--ink);
-}
-
-body {
-  background-color: var(--page);
-  color: var(--ink);
-  transition: background-color 0.9s cubic-bezier(0.4, 0, 0.2, 1), color 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  .prose-legal th { @apply border-b border-line bg-mist px-3 py-2.5 font-medium text-ink; }
+  .prose-legal td { @apply border-b border-line px-3 py-2.5 align-top; }
 }
 
 /* Smooth <details> accordions where supported */
@@ -319,8 +181,8 @@ details[open]::details-content {
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
     opacity: 0;
-    translate: 0 16px;
-    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), translate 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    translate: 0 14px;
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .js [data-reveal].is-visible {
@@ -336,4 +198,5 @@ details[open]::details-content {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .motion-only { display: none; }
 }

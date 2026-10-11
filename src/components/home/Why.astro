@@ -1,0 +1,47 @@
+---
+import { CircleAlert } from '@lucide/astro';
+
+const problems = [
+  {
+    n: '01',
+    title: 'Built elsewhere, translated here',
+    body: 'Most technology is designed for other countries and translated for India. Cups instead of katoris, English-only search, prices in dollars.',
+  },
+  {
+    n: '02',
+    title: 'Designed for attention, not wellbeing',
+    body: 'Many apps are measured by how long they keep you, not by whether your day got better.',
+  },
+  {
+    n: '03',
+    title: 'Data taken, not earned',
+    body: 'People are asked for more than an app needs, with little say in what happens next.',
+  },
+];
+---
+
+<section id="why" class="scroll-mt-20 py-20 sm:py-28">
+  <div class="container-x">
+    <div class="grid gap-12 px-2 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-24 lg:px-10">
+      <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+        <p class="chip"><span class="chip-icon"><CircleAlert class="size-3.5" /></span>Why we exist</p>
+        <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Technology often forgets the <span class="accent-italic">people</span> it serves</h2>
+        <p class="section-lead mt-5 max-w-md">
+          We started Rachna Labs because everyday technology in India could be kinder, clearer and more honest. So we work differently: research first, people first, and every claim backed by evidence.
+        </p>
+      </div>
+
+      <ol class="divide-y divide-line border-y border-line">
+        {
+          problems.map((p, i) => (
+            <li class="grid grid-cols-[3.5rem_1fr] gap-4 py-8" data-reveal style={`--reveal-delay: ${i * 90}ms`}>
+              <span class="text-[15px] text-blue tabular-nums">{p.n}</span>
+              <span><h3 class="text-[21px] font-light tracking-[-0.015em]">{p.title}</h3>
+              <p class="mt-2 text-[14px] leading-relaxed text-muted-foreground">{p.body}</p></span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

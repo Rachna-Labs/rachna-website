@@ -1,0 +1,32 @@
+---
+import { BookOpenCheck, Globe2, Lock, Scale } from '@lucide/astro';
+
+const principles = [
+  { icon: Scale, title: 'Evidence over opinion', body: 'Every number and claim has a named source. If we cannot back it up, it does not ship.' },
+  { icon: Lock, title: 'Private by design', body: 'We collect only what is needed, never sell data, and keep analytics off until people agree.' },
+  { icon: Globe2, title: 'Made in India, for India', body: 'Indian languages, measures and money from day one, not added later as a translation.' },
+  { icon: BookOpenCheck, title: 'Open where it helps', body: 'We share data and learnings, like Plate’s food catalog API, so others can build on them.' },
+];
+---
+
+<section id="principles" class="border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="px-2 sm:px-6 lg:px-10">
+      <div class="max-w-2xl" data-reveal>
+        <p class="eyebrow">Principles</p>
+        <h2 class="mt-5 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Four rules we <span class="accent-italic">never trade away</span></h2>
+      </div>
+      <ul class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        {
+          principles.map((p, i) => (
+            <li class="border-t border-ink/15 pt-6" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+              <p.icon class="size-6 text-blue" stroke-width={1.5} />
+              <h3 class="mt-6 text-[19px] font-light tracking-[-0.01em]">{p.title}</h3>
+              <p class="mt-2 text-[14px] leading-relaxed text-muted-foreground">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

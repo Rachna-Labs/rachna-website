@@ -1,123 +1,224 @@
 ---
-import { Image } from 'astro:assets';
-import { ArrowRight } from '@lucide/astro';
-import sketch from '../../assets/journey/sketch.jpg';
-import thali from '../../assets/plate/thali.webp';
-import sakhiHome from '../../assets/sakhi/home.webp';
-import exhibition from '../../assets/journey/exhibition.jpg';
-import dal from '../../assets/plate/food-dal.webp';
+import { ArrowRight, Atom } from '@lucide/astro';
 
-// "People" in the languages of India, shown one after another.
-const words = [
-  { text: 'people', lang: 'en' },
-  { text: 'लोग', lang: 'hi' },
-  { text: 'மக்கள்', lang: 'ta' },
-  { text: 'মানুষ', lang: 'bn' },
-  { text: 'ప్రజలు', lang: 'te' },
-  { text: 'લોકો', lang: 'gu' },
+/*
+ * The lab's core: a slowly turning sphere made of dots. Small dots leave it and travel
+ * along circuit traces to both edges of the screen, like ideas going out into the world.
+ *
+ * Traces are drawn on a 1600 × 420 stage centred on the sphere (800, 230). Each trace is
+ * defined for the right side and mirrored for the left. The SVG draws the traces; a canvas
+ * on the same stage draws the sphere and the moving dots.
+ */
+const W = 1600;
+const H = 420;
+const cx = 800;
+
+type Pt = [number, number];
+const right: Pt[][] = [
+  [[920, 230], [1600, 230]],
+  [[910, 190], [1010, 190], [1050, 150], [1260, 150], [1290, 120], [1600, 120]],
+  [[910, 270], [1000, 270], [1040, 310], [1330, 310], [1360, 340], [1600, 340]],
+  [[880, 150], [940, 90], [1120, 90], [1150, 60], [1600, 60]],
+  [[880, 310], [930, 360], [1180, 360], [1210, 390], [1600, 390]],
+  [[930, 210], [1130, 210], [1160, 180], [1420, 180], [1450, 205], [1600, 205]],
+  [[930, 250], [1100, 250], [1130, 275], [1470, 275], [1500, 255], [1600, 255]],
 ];
+const mirror = (pts: Pt[]): Pt[] => pts.map(([x, y]) => [2 * cx - x, y]);
+const traces = [...right, ...right.map(mirror)];
+const d = (pts: Pt[]) => `M${pts.map(([x, y]) => `${x} ${y}`).join(' L')}`;
+// Vias: a few of the corners where a trace changes direction.
+const vias = traces.flatMap((pts) => pts.slice(1, -1).filter((_, i) => i % 2 === 1));
 ---
 
-<section data-theme="paper" class="hero relative overflow-hidden" aria-labelledby="hero-title">
-  <div class="container-x pt-16 text-center sm:pt-24">
-    <p class="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[13px] font-medium" style="border-color: var(--line)">
-      <span class="size-1.5 rounded-full bg-sindoor"></span>
-      An Indian technology company
-    </p>
-
-    <h1 id="hero-title" class="mx-auto mt-8 max-w-5xl font-display text-[3.2rem] leading-[1] font-semibold tracking-[-0.045em] sm:text-[5.6rem] lg:text-[6.8rem]">
-      Technology, crafted<br />
-      around{' '}
-      <span class="sr-only">people.</span>
-      <span aria-hidden="true" class="whitespace-nowrap">
-        <span data-morph data-words={JSON.stringify(words)} lang="en" class="morph font-serif font-normal tracking-[-0.02em] text-[#C6431F] italic">people</span><span class="font-serif font-normal text-[#C6431F] italic">.</span>
-      </span>
+<section id="top" class="hero relative overflow-hidden">
+  <div class="relative container-text pt-24 text-center sm:pt-32 lg:pt-36">
+    <p class="chip"><span class="chip-icon"><Atom class="size-3.5" /></span>An Indian research and product lab</p>
+    <h1 class="mx-auto mt-7 max-w-3xl font-display text-[2.6rem] leading-[1.08] font-light tracking-[-0.035em] text-ink sm:text-[3.5rem] lg:text-[4rem]">
+      Research that turns into technology for <span class="accent-italic">people</span>
     </h1>
-
-    <p class="text-muted mx-auto mt-7 max-w-xl text-lg leading-relaxed sm:text-[21px]">
-      Rachna Labs builds calm, useful technology for everyday India. One family of apps, one design language, one account.
+    <p class="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
+      Rachna Labs studies everyday problems in India, from food and learning to safety and money, and turns what we learn into calm, careful technology.
     </p>
-
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-      <a href="/#mission" class="btn btn-lg btn-ink">Our mission</a>
-      <a href="/#apps" class="btn btn-lg border bg-white" style="border-color: var(--line)">Meet the apps <ArrowRight class="size-4" /></a>
+    <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+      <a href="/#research" class="btn btn-primary btn-lg">Explore our research</a>
+      <a href="/#method" class="text-link">How we work <ArrowRight class="size-4" /></a>
     </div>
   </div>
 
-  <ul
-    class="hide-scrollbar mx-auto mt-16 flex max-w-[1240px] snap-x snap-mandatory items-end gap-3 overflow-x-auto px-4 pb-2 sm:mt-20 sm:gap-4 sm:px-6 lg:overflow-visible lg:px-8"
-    aria-label="Moments from Rachna Labs"
-  >
-    <li class="tile w-[64vw] flex-none snap-center sm:w-[260px] lg:w-auto lg:flex-1">
-      <div class="relative h-[300px] overflow-hidden rounded-[28px] bg-card sm:h-[320px]">
-        <Image src={sketch} alt="Paper sketches of app screens" width={700} class="size-full object-cover" />
-      </div>
-      <p class="text-muted mt-3 text-[13px]">Sketched by hand</p>
-    </li>
-    <li class="tile w-[64vw] flex-none snap-center sm:w-[260px] lg:w-auto lg:flex-1">
-      <div class="relative h-[300px] overflow-hidden rounded-[28px] bg-card sm:h-[380px]">
-        <Image src={thali} alt="Dal, roti, sabzi and curd on a steel thali" width={700} class="size-full object-cover" />
-      </div>
-      <p class="text-muted mt-3 text-[13px]">Made for everyday India</p>
-    </li>
-    <li class="tile w-[64vw] flex-none snap-center sm:w-[260px] lg:w-auto lg:flex-[1.15]">
-      <div class="sakhi-tile relative flex h-[300px] items-start justify-center overflow-hidden rounded-[28px] sm:h-[440px]">
-        <Image src={sakhiHome} alt="Sakhi's home screen on an iPhone" width={600} class="mt-8 w-[68%] drop-shadow-2xl" />
-      </div>
-      <p class="text-muted mt-3 text-[13px]">Sakhi, live on the App Store</p>
-    </li>
-    <li class="tile w-[64vw] flex-none snap-center sm:w-[260px] lg:w-auto lg:flex-1">
-      <div class="relative h-[300px] overflow-hidden rounded-[28px] bg-card sm:h-[380px]">
-        <Image src={exhibition} alt="Visitors trying Sakhi at an exhibition" width={700} class="size-full object-cover" />
-      </div>
-      <p class="text-muted mt-3 text-[13px]">Built with the people it is for</p>
-    </li>
-    <li class="tile w-[64vw] flex-none snap-center sm:w-[260px] lg:w-auto lg:flex-1">
-      <div class="relative flex h-[300px] items-center justify-center overflow-hidden rounded-[28px] bg-[#E4F4EA] sm:h-[320px]">
-        <Image src={dal} alt="A bowl of dal" width={400} class="w-[78%] drop-shadow-xl" />
-      </div>
-      <p class="text-muted mt-3 text-[13px]">Plate, by katori and roti</p>
-    </li>
-  </ul>
+  <!-- The energy core -->
+  <div class="energy-stage relative mt-4 h-[640px] sm:mt-6" aria-hidden="true">
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" class="absolute inset-0 size-full" fill="none">
+      <defs>
+        <linearGradient id="trace-fade" x1="0" y1="0" x2="1600" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#E3EBF7" stop-opacity="0" />
+          <stop offset="0.22" stop-color="#D8E3F4" />
+          <stop offset="0.5" stop-color="#CBDAF3" />
+          <stop offset="0.78" stop-color="#D8E3F4" />
+          <stop offset="1" stop-color="#E3EBF7" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      {traces.map((pts) => <path d={d(pts)} stroke="url(#trace-fade)" stroke-width="1.2" stroke-linejoin="round" />)}
+      {vias.map(([x, y]) => <circle cx={x} cy={y} r="2.6" fill="#fff" stroke="#CBDAF3" stroke-width="1.1" />)}
+    </svg>
+
+    <span class="sphere-glow absolute top-[350px] left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
+    <canvas data-sphere data-traces={JSON.stringify(traces)} class="absolute inset-0 size-full"></canvas>
+  </div>
 </section>
 
 <style>
-  .sakhi-tile {
-    background: linear-gradient(180deg, #fde8ef 0%, #f8c9da 100%);
+  .hero {
+    background: #ffffff;
   }
-  .morph {
-    display: inline-block;
-    transition:
-      opacity 0.45s ease,
-      filter 0.45s ease,
-      translate 0.45s ease;
+  /* Everything in the energy stage dissolves into the page: no hard edges at the bottom or sides. */
+  .energy-stage {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
   }
-  .morph.is-out {
-    opacity: 0;
-    filter: blur(8px);
-    translate: 0 0.12em;
-  }
-  .hide-scrollbar {
-    scrollbar-width: none;
-  }
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+
+  .sphere-glow {
+    width: min(640px, 100vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(214 228 255 / 0.55), rgb(232 240 255 / 0.25) 55%, rgb(255 255 255 / 0));
   }
 </style>
 
 <script>
-  const target = document.querySelector<HTMLElement>('[data-morph]');
-  if (target && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const words: { text: string; lang: string }[] = JSON.parse(target.dataset.words ?? '[]');
-    let index = 0;
-    setInterval(() => {
-      index = (index + 1) % words.length;
-      target.classList.add('is-out');
-      setTimeout(() => {
-        target.textContent = words[index].text;
-        target.lang = words[index].lang;
-        target.classList.remove('is-out');
-      }, 450);
-    }, 2800);
+  type Pt = [number, number];
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-sphere]');
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    const W = 1600;
+    const H = 420;
+    const CX = 800;
+    const CY = 230;
+    const traces: Pt[][] = JSON.parse(canvas.dataset.traces ?? '[]');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Points scattered evenly at random over a sphere, with a little depth so it feels organic.
+    const N = 2400;
+    const points = Array.from({ length: N }, () => {
+      const y = Math.random() * 2 - 1;
+      const r = Math.sqrt(1 - y * y);
+      const phi = Math.random() * Math.PI * 2;
+      const j = 1 - Math.random() * 0.06;
+      return { x: Math.cos(phi) * r * j, y: y * j, z: Math.sin(phi) * r * j, accent: Math.random() < 0.05 };
+    });
+
+    // Each trace as a polyline with cumulative lengths, for moving dots along it.
+    const paths = traces.map((pts) => {
+      const lengths = [0];
+      for (let i = 1; i < pts.length; i++) {
+        lengths.push(lengths[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      }
+      return { pts, lengths, total: lengths[lengths.length - 1] };
+    });
+    const at = (p: (typeof paths)[number], f: number): Pt => {
+      const target = f * p.total;
+      let i = 1;
+      while (i < p.lengths.length - 1 && p.lengths[i] < target) i++;
+      const seg = p.lengths[i] - p.lengths[i - 1] || 1;
+      const t = (target - p.lengths[i - 1]) / seg;
+      const [x1, y1] = p.pts[i - 1];
+      const [x2, y2] = p.pts[i];
+      return [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t];
+    };
+    const travellers = paths.flatMap((p, i) =>
+      [0, 1, 2, 3].map((k) => ({ path: p, phase: (i * 0.137 + k / 4) % 1, speed: 1 / (3000 + (i % 5) * 600) })),
+    );
+
+    let w = 0;
+    let h = 0;
+    let scale = 1;
+    let ox = 0;
+    let oy = 0;
+    let R = 150;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Match the SVG's preserveAspectRatio="xMidYMid slice".
+      scale = Math.max(w / W, h / H);
+      ox = (w - W * scale) / 2;
+      oy = (h - H * scale) / 2;
+      R = Math.min(172, (w / scale) * 0.4);
+    };
+
+    const draw = (time: number) => {
+      ctx.clearRect(0, 0, w, h);
+      const cx = ox + CX * scale;
+      const cy = oy + CY * scale;
+      const r = R * scale;
+
+      // The sphere
+      const a = time * 0.00034;
+      const tilt = 0.38 + Math.sin(time * 0.0004) * 0.12;
+      const ca = Math.cos(a);
+      const sa = Math.sin(a);
+      const cb = Math.cos(tilt);
+      const sb = Math.sin(tilt);
+      for (const p of points) {
+        const x1 = p.x * ca + p.z * sa;
+        const z1 = -p.x * sa + p.z * ca;
+        const y2 = p.y * cb - z1 * sb;
+        const z2 = p.y * sb + z1 * cb;
+        const depth = (z2 + 1) / 2; // 0 = back, 1 = front
+        const persp = 1 / (1.6 - z2 * 0.35);
+        const px = cx + x1 * r * persp * 1.6;
+        const py = cy + y2 * r * persp * 1.6;
+        const size = 0.8 + depth * 1.3;
+        ctx.globalAlpha = 0.28 + depth * 0.62;
+        ctx.fillStyle = p.accent ? '#2B7BF6' : '#3B4E78';
+        ctx.fillRect(px - size / 2, py - size / 2, size, size);
+      }
+
+      // Dots travelling along the circuits, each with a short fading trail
+      for (const tr of travellers) {
+        const f = (tr.phase + time * tr.speed) % 1;
+        const fade = Math.min(1, f * 6) * Math.min(1, (1 - f) * 4);
+        for (let k = 0; k < 6; k++) {
+          const fk = f - k * 0.006;
+          if (fk < 0) break;
+          const [x, y] = at(tr.path, fk);
+          ctx.globalAlpha = fade * (1 - k / 6) * 0.85;
+          ctx.fillStyle = '#2B7BF6';
+          ctx.beginPath();
+          ctx.arc(ox + x * scale, oy + y * scale, (k === 0 ? 2 : 1.4) * Math.max(0.8, scale * 0.9), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    let frame = 0;
+    let running = false;
+    const loop = (time: number) => {
+      draw(time);
+      if (running) frame = requestAnimationFrame(loop);
+    };
+    const start = () => {
+      if (running || reduce) return;
+      running = true;
+      frame = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(frame);
+    };
+
+    resize();
+    draw(0);
+    new ResizeObserver(() => {
+      resize();
+      draw(performance.now());
+    }).observe(canvas);
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop())).observe(canvas);
   }
 </script>

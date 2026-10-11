@@ -4,19 +4,16 @@ import Logo from './Logo.astro';
 import { nav } from '../config/site';
 ---
 
-<header
-  id="site-header"
-  class="site-header sticky top-0 z-50 w-full backdrop-blur-2xl backdrop-saturate-150"
->
-  <div class="container-x flex h-13 items-center justify-between gap-6">
-    <Logo />
+<header id="site-header" class="group sticky top-0 z-50 bg-white/80 backdrop-blur-xl transition-shadow duration-300 data-[scrolled]:shadow-[0_1px_0_rgba(14,21,37,0.06)]">
+  <div class="container-x flex h-[84px] items-center justify-between gap-6 transition-[height] duration-300 group-data-[scrolled]:h-16">
+    <Logo class="pl-2" />
 
-    <nav aria-label="Primary" class="absolute left-1/2 hidden -translate-x-1/2 md:block">
-      <ul class="flex items-center gap-7">
+    <nav aria-label="Primary" class="absolute left-1/2 hidden -translate-x-1/2 lg:block">
+      <ul class="flex items-center gap-9">
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} class="text-[13px] opacity-70 transition-opacity hover:opacity-100">
+              <a href={item.href} class="text-[13.5px] text-graphite transition-colors hover:text-blue">
                 {item.label}
               </a>
             </li>
@@ -26,52 +23,38 @@ import { nav } from '../config/site';
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href="/#contact" data-topic="Business enquiry" class="btn btn-ink hidden h-8 px-4 text-[13px] sm:inline-flex">Contact</a>
+      <a href="/#contact" data-topic="Business enquiry" class="btn btn-primary mr-2 hidden h-10 px-5 sm:inline-flex">Contact us</a>
       <button
         type="button"
         id="menu-toggle"
-        class="inline-flex size-9 items-center justify-center rounded-full md:hidden"
+        class="flex size-10 items-center justify-center rounded-[12px] border border-line bg-panel text-ink lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Open menu"
       >
-        <Menu class="menu-icon-open size-5" />
-        <X class="menu-icon-close hidden size-5" />
+        <Menu class="menu-icon-open size-4" />
+        <X class="menu-icon-close hidden size-4" />
       </button>
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden h-[calc(100dvh-3.25rem)] md:hidden">
-    <nav aria-label="Mobile" class="container-x py-6">
+  <div id="mobile-menu" class="hidden border-t border-line bg-white lg:hidden">
+    <nav aria-label="Mobile" class="container-x py-4">
       <ul class="grid gap-1">
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} data-close-menu class="block py-2.5 font-display text-[28px] font-semibold tracking-tight">
+              <a href={item.href} data-close-menu class="block rounded-[12px] px-3 py-3 text-[18px] font-medium tracking-tight hover:bg-tile">
                 {item.label}
               </a>
             </li>
           ))
         }
       </ul>
-      <a href="/#contact" data-close-menu data-topic="Business enquiry" class="btn btn-ink btn-lg mt-8 w-full">Contact us</a>
+      <a href="/#contact" data-close-menu data-topic="Business enquiry" class="btn btn-primary btn-md mt-3 w-full">Contact us</a>
     </nav>
   </div>
 </header>
-
-<style>
-  .site-header {
-    color: var(--ink);
-    background-color: color-mix(in srgb, var(--page) 78%, transparent);
-    transition: background-color 0.9s cubic-bezier(0.4, 0, 0.2, 1), color 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .site-header[data-scrolled] {
-    box-shadow: 0 1px 0 var(--line);
-  }
-  #mobile-menu {
-    background-color: var(--page);
-  }
-</style>
 
 <script>
   const header = document.getElementById('site-header');
@@ -90,7 +73,6 @@ import { nav } from '../config/site';
       toggle.querySelector('.menu-icon-open')?.classList.toggle('hidden', open);
       toggle.querySelector('.menu-icon-close')?.classList.toggle('hidden', !open);
     };
-
     toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
     menu.querySelectorAll('[data-close-menu]').forEach((link) => link.addEventListener('click', () => setOpen(false)));
     window.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));

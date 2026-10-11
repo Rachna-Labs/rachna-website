@@ -131,10 +131,10 @@ export const socialLinks = (
   .map(([label, href]) => ({ label, href }));
 
 export const nav = [
-  { label: 'Mission', href: '/#mission' },
-  { label: 'Journey', href: '/#journey' },
-  { label: 'Ecosystem', href: '/#ecosystem' },
-  { label: 'Apps', href: '/#apps' },
+  { label: 'Why we exist', href: '/#why' },
+  { label: 'Method', href: '/#method' },
+  { label: 'Research', href: '/#research' },
+  { label: 'Our work', href: '/#work' },
   { label: 'FAQ', href: '/#faq' },
 ];
 
