@@ -11,11 +11,10 @@ import { fileURLToPath } from 'node:url';
 const out = (file) => fileURLToPath(new URL(`../public/${file}`, import.meta.url));
 const domain = (process.env.SITE_URL ?? 'https://www.rachnalabs.com').replace(/^https?:\/\//, '').replace(/\/$/, '');
 
-// The mark's drawing, in its own 696 x 796 coordinates.
+// The mark's drawing, in its own coordinates (read from its viewBox).
 const source = await readFile(new URL('../src/assets/brand/mark.svg', import.meta.url), 'utf8');
 const drawing = source.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
-const W = 696;
-const H = 796;
+const [, , W, H] = source.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number);
 
 /** The mark centred on a square canvas, `scale` of its height, on an optional background. */
 function icon({ size, color = '#111111', background, scale = 0.8, radius = 0 }) {
@@ -59,7 +58,7 @@ function toIco(images) {
 }
 
 const font = `font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"`;
-const markInOg = icon({ color: '#111111', scale: 1 }).replace('<svg', '<svg x="80" y="72" width="56" height="64"');
+const markInOg = icon({ color: '#111111', scale: 1 }).replace('<svg', '<svg x="80" y="66" width="64" height="64"');
 
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#FFFFFF"/>
