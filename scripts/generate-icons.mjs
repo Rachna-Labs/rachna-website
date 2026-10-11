@@ -27,15 +27,15 @@ function icon({ size, color = '#111111', background, scale = 0.8, radius = 0 }) 
 
 /**
  * The website icon (src/assets/brand/website-icon.png): the black mark inside a white circle,
- * so it reads on light and dark browser tabs alike. The mark is 70.5% of the circle's height,
+ * so it reads on light and dark browser tabs alike. The mark is 80.6% of the circle's height,
  * centred slightly low, as in the designed icon.
  */
 function websiteIcon(size) {
   const box = 1000;
-  const h = 705;
+  const h = 806;
   const w = (h * W) / H;
   const dims = size ? `width="${size}" height="${size}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" ${dims} viewBox="0 0 ${box} ${box}"><circle cx="500" cy="500" r="500" fill="#ffffff"/><g transform="translate(${(box - w) / 2} ${552 - h / 2}) scale(${h / H})" fill="#111111">${drawing}</g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" ${dims} viewBox="0 0 ${box} ${box}"><circle cx="500" cy="500" r="500" fill="#ffffff"/><g transform="translate(${(box - w) / 2} ${544 - h / 2}) scale(${h / H})" fill="#111111">${drawing}</g></svg>`;
 }
 
 const png = (svg) => sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer();
