@@ -24,6 +24,7 @@ export function baseSchemas(siteUrl: URL): Schema[] {
     email: site.email,
     alternateName: 'रचना',
     knowsAbout: [
+      'Applied research',
       'Mobile applications',
       'Design systems',
       'Food and nutrition software',

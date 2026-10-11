@@ -19,21 +19,22 @@ const socialPath: Record<string, string | undefined> = {
 const columns = [
   {
     title: 'Products',
-    links: products.map((p) => ({ label: p.name, href: '/#products' })),
+    links: products.map((p) => ({ label: p.name, href: `/#product-${p.key}` })),
   },
   {
-    title: 'Approach',
+    title: 'The lab',
     links: [
-      { label: 'Native by default', href: '/#approach' },
-      { label: 'Made for India', href: '/#approach' },
-      { label: 'Private by design', href: '/#approach' },
+      { label: 'Why we exist', href: '/#why' },
+      { label: 'Method', href: '/#method' },
+      { label: 'Research', href: '/#research' },
+      { label: 'Principles', href: '/#principles' },
     ],
   },
   {
     title: 'Company',
     links: [
+      { label: 'Careers', href: '/#careers' },
       { label: 'Contact', href: '/#contact' },
-      { label: 'Careers', href: '/#contact' },
       { label: 'FAQ', href: '/#faq' },
     ],
   },

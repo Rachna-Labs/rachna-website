@@ -19,7 +19,7 @@ import { products, productCta, statusLabel } from '../../data/products';
           products.map((p) => {
             const cta = productCta(p);
             return (
-              <li>
+              <li id={`product-${p.key}`} class="scroll-mt-28">
                 <a
                   href={cta.href}
                   {...(cta.external ? { target: '_blank', rel: 'noopener noreferrer' } : { 'data-topic': 'Product enquiry', 'data-product': p.name })}

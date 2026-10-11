@@ -1,7 +1,8 @@
 ---
-import { Menu, X } from '@lucide/astro';
+import { ArrowRight, ChevronDown, Menu, X } from '@lucide/astro';
 import Logo from './Logo.astro';
 import { nav } from '../config/site';
+import { products, statusLabel } from '../data/products';
 ---
 
 <header id="site-header" class="group sticky top-0 z-50 bg-white/80 backdrop-blur-xl transition-shadow duration-300 data-[scrolled]:shadow-[0_1px_0_rgba(17,17,17,0.06)]">
@@ -11,7 +12,43 @@ import { nav } from '../config/site';
     <nav aria-label="Primary" class="absolute left-1/2 hidden -translate-x-1/2 lg:block">
       <ul class="flex items-center gap-9">
         {
-          nav.map((item) => (
+          nav.slice(0, 1).map((item) => (
+            <li>
+              <a href={item.href} class="text-[13.5px] text-graphite transition-colors hover:text-blue">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="products-menu relative" data-products-menu>
+          <button type="button" class="flex items-center gap-1 text-[13.5px] text-graphite transition-colors hover:text-blue" aria-expanded="false" aria-controls="products-panel">
+            Products <ChevronDown class="chev size-3.5 transition-transform duration-200" />
+          </button>
+          <div id="products-panel" class="products-panel absolute top-full left-1/2 w-[420px] -translate-x-1/2 pt-4">
+            <div class="rounded-[20px] border border-line bg-white p-2">
+              <ul>
+                {
+                  products.map((p) => (
+                    <li>
+                      <a href={`/#product-${p.key}`} class="flex items-center justify-between gap-4 rounded-[14px] px-4 py-3 transition-colors hover:bg-tile">
+                        <span>
+                          <span class="block text-[14px] font-medium text-ink">{p.name}</span>
+                          <span class="block text-[12.5px] text-muted-foreground">{p.tagline}</span>
+                        </span>
+                        <span class="shrink-0 rounded-full border border-line px-2.5 py-0.5 text-[11.5px] text-graphite">{statusLabel[p.status]}</span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+              <a href="/#work" class="mt-1 flex items-center justify-between rounded-[14px] border-t border-line px-4 pt-3 pb-2 text-[13px] text-graphite hover:text-blue">
+                All our work <ArrowRight class="size-3.5" />
+              </a>
+            </div>
+          </div>
+        </li>
+        {
+          nav.slice(1).map((item) => (
             <li>
               <a href={item.href} class="text-[13.5px] text-graphite transition-colors hover:text-blue">
                 {item.label}
@@ -42,7 +79,31 @@ import { nav } from '../config/site';
     <nav aria-label="Mobile" class="container-x py-4">
       <ul class="grid gap-1">
         {
-          nav.map((item) => (
+          nav.slice(0, 1).map((item) => (
+            <li>
+              <a href={item.href} data-close-menu class="block rounded-[12px] px-3 py-3 text-[18px] font-medium tracking-tight hover:bg-tile">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="px-3 pt-3 text-[12px] font-medium tracking-[0.12em] text-muted-foreground uppercase">Products</p>
+      <ul class="mt-1 grid grid-cols-2 gap-1">
+        {
+          products.map((p) => (
+            <li>
+              <a href={`/#product-${p.key}`} data-close-menu class="block rounded-[12px] px-3 py-2 hover:bg-tile">
+                <span class="block text-[16px] font-medium tracking-tight">{p.name}</span>
+                <span class="block text-[12px] text-muted-foreground">{p.category}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="mt-2 grid gap-1">
+        {
+          nav.slice(1).map((item) => (
             <li>
               <a href={item.href} data-close-menu class="block rounded-[12px] px-3 py-3 text-[18px] font-medium tracking-tight hover:bg-tile">
                 {item.label}
@@ -56,7 +117,59 @@ import { nav } from '../config/site';
   </div>
 </header>
 
+<style>
+  .products-panel {
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 6px;
+    transition:
+      opacity 0.2s ease,
+      translate 0.2s ease,
+      visibility 0.2s;
+  }
+  .products-menu:hover .products-panel,
+  .products-menu:focus-within .products-panel,
+  .products-menu[data-open] .products-panel {
+    visibility: visible;
+    opacity: 1;
+    translate: 0 0;
+  }
+  .products-menu.is-closing .products-panel {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .products-menu:hover .chev,
+  .products-menu[data-open] .chev {
+    rotate: 180deg;
+  }
+</style>
+
 <script>
+  // Products dropdown: opens on hover and focus (CSS), and on click for touch and keyboard.
+  const productsMenu = document.querySelector<HTMLElement>('[data-products-menu]');
+  const productsButton = productsMenu?.querySelector('button');
+  if (productsMenu && productsButton) {
+    const set = (open: boolean) => {
+      productsMenu.toggleAttribute('data-open', open);
+      productsButton.setAttribute('aria-expanded', String(open));
+    };
+    productsButton.addEventListener('click', () => set(!productsMenu.hasAttribute('data-open')));
+    productsMenu.addEventListener('mouseleave', () => set(false));
+    document.addEventListener('click', (e) => {
+      if (!productsMenu.contains(e.target as Node)) set(false);
+    });
+    window.addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+    // Choosing a product closes the menu, even though focus would otherwise keep it open.
+    productsMenu.querySelectorAll('.products-panel a').forEach((link) =>
+      link.addEventListener('click', () => {
+        set(false);
+        (link as HTMLElement).blur();
+        productsMenu.classList.add('is-closing');
+        setTimeout(() => productsMenu.classList.remove('is-closing'), 600);
+      }),
+    );
+  }
+
   const header = document.getElementById('site-header');
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');

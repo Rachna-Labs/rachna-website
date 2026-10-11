@@ -53,14 +53,15 @@ export const site: SiteConfig = {
   legalName: 'Rachna Softech LLP',
   entityType: 'Limited Liability Partnership',
   tagline: 'Technology, crafted around people.',
-  title: 'Rachna Labs (रचना) | Everyday apps, made in India',
+  title: 'Rachna Labs (रचना) | Research that turns into technology for people',
   description:
-    'Rachna Labs (रचना) makes calm, useful apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Balance for money and Paparazi for small businesses. One design language, built natively for iPhone, Android and the web.',
+    'Rachna Labs (रचना) is an Indian research and product lab. We study everyday problems in food, learning, safety and money, and turn what we learn into calm, careful technology: Plate, Grokul, Beside, Balance and Paparazi.',
   keywords: [
     'Rachna Labs',
     'रचना',
     'Rachna Softech LLP',
-    'Indian app company',
+    'Indian research lab',
+    'Indian technology company',
     'made in India apps',
     'Plate food logging app India',
     'Balance finance app',
@@ -70,7 +71,7 @@ export const site: SiteConfig = {
   ],
   locale: 'en_IN',
   lang: 'en-IN',
-  themeColor: '#FBF3E6',
+  themeColor: '#FFFFFF',
 
   email: 'hello@rachnalabs.com',
   phone: '',
@@ -129,12 +130,12 @@ export const socialLinks = (
   .filter(([, href]) => href)
   .map(([label, href]) => ({ label, href }));
 
+// Like most labs' sites: the work first, then the company, one action on the right.
+// Products is a dropdown, added by the header after Research.
 export const nav = [
-  { label: 'Why we exist', href: '/#why' },
-  { label: 'Method', href: '/#method' },
   { label: 'Research', href: '/#research' },
-  { label: 'Our work', href: '/#work' },
-  { label: 'FAQ', href: '/#faq' },
+  { label: 'About', href: '/#why' },
+  { label: 'Careers', href: '/#careers' },
 ];
 
 export const legalLinks = [

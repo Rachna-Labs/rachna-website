@@ -1,19 +1,15 @@
 export const faqs = [
   {
     q: 'What does Rachna Labs do?',
-    a: 'We design, build and run our own family of apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Balance for money and Paparazi for small businesses.',
+    a: 'We are an Indian research and product lab. We study everyday problems in food, learning, safety and money, and when an idea proves itself we build it into a product: Plate for food, Grokul for learning, Beside for safety, Balance for money and Paparazi for small businesses.',
   },
   {
     q: 'Which apps can I use today?',
-    a: 'Plate and Balance are being built, and Grokul, Beside and Paparazi are coming soon. Each app on this page shows where it stands.',
+    a: 'None yet. Plate and Balance are being built, and Grokul, Beside and Paparazi are coming soon. Our work, above, shows where each one stands.',
   },
   {
-    q: 'What is a Rachna account?',
-    a: 'One sign-in for every Rachna app, so you do not have to start over in each one. We are building it now. You will always choose what each app can see.',
-  },
-  {
-    q: 'Why do the apps look and feel alike?',
-    a: 'They share Rachna Kit, our design system. Colours, type, spacing and motion are written once and turned into SwiftUI for iPhone, Jetpack Compose for Android and CSS for the web. Each app keeps its own colours.',
+    q: 'How do you decide what to build?',
+    a: 'We start with people, not features. We listen first, try many small prototypes, and only build what holds up to evidence. Every number or claim in our products comes from a named source.',
   },
   {
     q: 'How do you protect my data?',
@@ -25,10 +21,10 @@ export const faqs = [
   },
   {
     q: 'Can my business work with you?',
-    a: 'Yes. Plate already offers a food data API that other apps can use, and we are open to partnerships. Tell us about your idea through the form below.',
+    a: 'Yes. We work with businesses, universities and NGOs on research and partnerships, and Plate offers a food data API that other apps can use. Tell us about your idea through the form below.',
   },
   {
     q: 'Are you hiring?',
-    a: 'We are always happy to meet designers, engineers and product people who care about craft. Write to us with your work.',
+    a: 'We do not list open roles yet, but we are always happy to meet designers, engineers and researchers who care about craft. See Careers above, or write to us with your work.',
   },
 ];

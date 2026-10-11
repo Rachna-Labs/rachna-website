@@ -1,127 +1,65 @@
 ---
-import { ArrowRight, ArrowUpRight, Clock, FlaskConical, Handshake, Mail, Send, UserPlus } from '@lucide/astro';
-import { site, hasAddress, fullAddress } from '../../config/site';
-import { products } from '../../data/products';
+import { ArrowUpRight, Mail, Send } from '@lucide/astro';
+import { site } from '../../config/site';
 
-const topics = ['Research collaboration', 'Partnership', 'Careers', 'Business enquiry', 'Product enquiry', 'Press & media', 'Something else'];
-const productOptions = ['General / not sure', ...products.map((p) => p.name)];
 const endpoint = site.contactFormEndpoint;
-
-const paths = [
-  { icon: FlaskConical, topic: 'Research collaboration', title: 'Research together', body: 'Universities, NGOs and researchers working on Indian everyday life.' },
-  { icon: Handshake, topic: 'Partnership', title: 'Partner with us', body: 'Build on our data, design system or products.' },
-  { icon: UserPlus, topic: 'Careers', title: 'Join the lab', body: 'Designers, engineers and researchers who care about craft.' },
-];
 ---
 
 <section id="contact" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
   <div class="container-x">
-    <div class="px-2 sm:px-6 lg:px-10">
-      <div class="relative grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-24" data-reveal>
-        <div class="flex flex-col">
-          <p class="chip self-start"><span class="chip-icon"><Send class="size-3.5" /></span>Contact</p>
-          <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">
-            Let’s build what India <span class="accent-italic">needs next</span>
-          </h2>
-          <p class="section-lead mt-5 max-w-md">Tell us what you are working on. We read every message ourselves and reply within one business day.</p>
-
-          <ul class="mt-10 divide-y divide-line border-y border-line">
-            {
-              paths.map((p) => (
-                <li>
-                  <a href="#contact-form" data-topic={p.topic} class="group flex items-center gap-4 py-5">
-                    <p.icon class="size-5 shrink-0 text-blue" stroke-width={1.6} />
-                    <span class="flex-1">
-                      <span class="block text-[16px] transition-colors group-hover:text-blue">{p.title}</span>
-                      <span class="block text-[13px] text-muted-foreground">{p.body}</span>
-                    </span>
-                    <ArrowRight class="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-blue" />
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-
-          <div class="mt-auto grid gap-3 pt-9 text-[13px] sm:grid-cols-2">
-            <a href={`mailto:${site.email}`} class="flex items-center gap-2.5 text-ink hover:text-blue">
-              <Mail class="size-4 text-blue" />{site.email}
-            </a>
-            <p class="flex items-center gap-2.5 text-muted-foreground"><Clock class="size-4 text-blue" />Mon–Fri · 10 AM – 7 PM IST</p>
-            {site.phone && <p class="text-muted-foreground">{site.phone}</p>}
-            {hasAddress && <p class="text-muted-foreground sm:col-span-2">{fullAddress}</p>}
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between gap-4 lg:pt-14">
-            <h3 class="text-[22px] font-light tracking-[-0.02em]">Send us a message</h3>
-            <span class="flex items-center gap-2 rounded-full bg-tile px-3 py-1 text-[12px] text-muted-foreground">
-              <span class="size-1.5 rounded-full bg-[#22C55E]"></span>Replies in 1 day
-            </span>
-          </div>
-
-          <form
-            id="contact-form"
-            class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-2"
-            action={endpoint || `mailto:${site.email}`}
-            method="post"
-            enctype={endpoint ? undefined : 'text/plain'}
-            data-endpoint={endpoint}
-            data-email={site.email}
-          >
-            <div>
-              <label for="cf-name" class="field-label">Full name</label>
-              <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120" class="field" placeholder="Aarav Sharma" />
-            </div>
-            <div>
-              <label for="cf-email" class="field-label">Email</label>
-              <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="160" class="field" placeholder="aarav@company.com" />
-            </div>
-            <div>
-              <label for="cf-company" class="field-label">Organisation <span class="text-muted-foreground/70">(optional)</span></label>
-              <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="120" class="field" placeholder="University, company or NGO" />
-            </div>
-            <div>
-              <label for="cf-phone" class="field-label">Phone <span class="text-muted-foreground/70">(optional)</span></label>
-              <input id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="20" class="field" placeholder="+91 98765 43210" />
-            </div>
-            <div>
-              <label for="cf-topic" class="field-label">Topic</label>
-              <select id="cf-topic" name="topic" class="field field-select">
-                {topics.map((t) => <option value={t}>{t}</option>)}
-              </select>
-            </div>
-            <div>
-              <label for="cf-product" class="field-label">About</label>
-              <select id="cf-product" name="product" class="field field-select">
-                {productOptions.map((p) => <option value={p}>{p}</option>)}
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label for="cf-message" class="field-label">Message</label>
-              <textarea id="cf-message" name="message" rows="5" required minlength="10" maxlength="4000" class="field h-auto py-3 leading-relaxed" placeholder="Tell us what you have in mind…"></textarea>
-            </div>
-
-            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
-
-            <label class="flex items-start gap-3 text-[13px] text-muted-foreground sm:col-span-2">
-              <input type="checkbox" name="consent" required class="mt-0.5 size-4 shrink-0 accent-[#111111]" />
-              <span>
-                I agree to the <a href="/privacy-policy/" class="text-blue hover:underline">Privacy Policy</a> and consent to being contacted about my message.
-              </span>
-            </label>
-
-            <div class="flex flex-col gap-3 pt-1 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-              <button type="submit" class="btn btn-primary btn-lg w-full disabled:cursor-wait disabled:opacity-70 sm:w-auto">
-                Send message <ArrowUpRight class="size-4" />
-              </button>
-              <p class="text-[12px] text-muted-foreground">We never share your details with anyone.</p>
-            </div>
-
-            <p id="form-status" role="status" aria-live="polite" hidden class="rounded-[12px] border px-4 py-3 text-sm sm:col-span-2"></p>
-          </form>
-        </div>
+    <div class="grid gap-12 px-2 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-24 lg:px-10" data-reveal>
+      <div>
+        <p class="chip"><span class="chip-icon"><Send class="size-3.5" /></span>Contact</p>
+        <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">
+          Let’s build what India <span class="accent-italic">needs next</span>
+        </h2>
+        <p class="section-lead mt-5 max-w-sm">Tell us what you are working on. We read every message and reply within a day.</p>
+        <a href={`mailto:${site.email}`} class="mt-8 inline-flex items-center gap-2.5 text-[15px] text-ink hover:text-blue">
+          <Mail class="size-4" />{site.email}
+        </a>
       </div>
+
+      <form
+        id="contact-form"
+        class="grid gap-7"
+        action={endpoint || `mailto:${site.email}`}
+        method="post"
+        enctype={endpoint ? undefined : 'text/plain'}
+        data-endpoint={endpoint}
+        data-email={site.email}
+      >
+
+        <div class="grid gap-7 sm:grid-cols-2">
+          <div>
+            <label for="cf-name" class="field-label">Name</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120" class="field" />
+          </div>
+          <div>
+            <label for="cf-email" class="field-label">Email</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="160" class="field" />
+          </div>
+        </div>
+        <div>
+          <label for="cf-message" class="field-label">Message</label>
+          <textarea id="cf-message" name="message" rows="3" required minlength="10" maxlength="4000" class="field"></textarea>
+        </div>
+
+        <input type="hidden" name="topic" value="General enquiry" />
+        <input type="hidden" name="product" value="" />
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <label class="flex items-center gap-2.5 text-[12.5px] text-muted-foreground">
+            <input type="checkbox" name="consent" required class="size-3.5 shrink-0 accent-[#111111]" />
+            <span>I agree to the <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-ink">Privacy Policy</a>.</span>
+          </label>
+          <button type="submit" class="btn btn-primary btn-lg shrink-0 disabled:cursor-wait disabled:opacity-70">
+            Send message <ArrowUpRight class="size-4" />
+          </button>
+        </div>
+
+        <p id="form-status" role="status" aria-live="polite" hidden class="rounded-[12px] border px-4 py-3 text-sm"></p>
+      </form>
     </div>
   </div>
 </section>
@@ -129,46 +67,32 @@ const paths = [
 <style>
   .field-label {
     display: block;
-    margin-bottom: 6px;
     font-size: 12.5px;
-    color: var(--color-graphite);
+    color: var(--color-muted-foreground);
   }
   .field {
     width: 100%;
-    height: 46px;
-    border-radius: 0;
+    height: 44px;
     border: 0;
     border-bottom: 1px solid var(--color-line);
     background: transparent;
-    padding: 0 2px;
-    font-size: 14px;
+    padding: 0;
+    font-size: 16px;
     color: var(--color-ink);
-    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
-  }
-  .field::placeholder {
-    color: rgb(17 17 17 / 0.35);
-  }
-  .field:hover {
-    border-bottom-color: #c9d3e2;
-  }
-  .field:focus {
-    outline: none;
-    border-bottom-color: var(--color-blue);
-    box-shadow: 0 1px 0 var(--color-blue);
+    transition: border-color 0.2s;
   }
   textarea.field {
     height: auto;
-    min-height: 110px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    min-height: 88px;
+    padding-top: 10px;
     resize: vertical;
   }
-  .field-select {
-    appearance: none;
-    padding-right: 28px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%236A7385' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 2px center;
+  .field:hover {
+    border-bottom-color: #c9c9c9;
+  }
+  .field:focus {
+    outline: none;
+    border-bottom-color: var(--color-ink);
   }
 </style>
 
@@ -178,8 +102,8 @@ const paths = [
   if (form) {
     const status = form.querySelector<HTMLElement>('#form-status')!;
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
-    const topicSelect = form.querySelector<HTMLSelectElement>('#cf-topic')!;
-    const productSelect = form.querySelector<HTMLSelectElement>('#cf-product')!;
+    const topicField = form.querySelector<HTMLInputElement>('input[name="topic"]')!;
+    const productField = form.querySelector<HTMLInputElement>('input[name="product"]')!;
     const endpoint = form.dataset.endpoint;
     const email = form.dataset.email ?? '';
 
@@ -188,14 +112,14 @@ const paths = [
       const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-topic], [data-product]');
       if (!trigger) return;
       const { topic, product } = trigger.dataset;
-      if (topic && [...topicSelect.options].some((o) => o.value === topic)) topicSelect.value = topic;
-      if (product && [...productSelect.options].some((o) => o.value === product)) productSelect.value = product;
+      if (topic) topicField.value = topic;
+      productField.value = product ?? '';
     });
 
     const show = (message: string, ok: boolean) => {
       status.textContent = message;
       status.hidden = false;
-      status.className = `rounded-[12px] border px-4 py-3 text-sm sm:col-span-2 ${ok ? 'border-[#CFE6D6] bg-[#F1F8F3] text-[#1D6B3E]' : 'border-[#F1D2CE] bg-[#FDF3F2] text-[#8E2414]'}`;
+      status.className = `rounded-[12px] border px-4 py-3 text-sm ${ok ? 'border-[#CFE6D6] bg-[#F1F8F3] text-[#1D6B3E]' : 'border-[#F1D2CE] bg-[#FDF3F2] text-[#8E2414]'}`;
     };
 
     form.addEventListener('submit', async (event) => {
@@ -225,8 +149,6 @@ const paths = [
       const body = [
         `Name: ${field('name')}`,
         `Email: ${field('email')}`,
-        `Company: ${field('company')}`,
-        `Phone: ${field('phone')}`,
         `Topic: ${field('topic')}`,
         `Product: ${field('product')}`,
         '',

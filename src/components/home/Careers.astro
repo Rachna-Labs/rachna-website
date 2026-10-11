@@ -1,0 +1,41 @@
+---
+import { ArrowUpRight, Briefcase } from '@lucide/astro';
+import { site } from '../../config/site';
+
+const areas = [
+  { title: 'Design', body: 'Product and interaction design, in Hindi and English.' },
+  { title: 'Engineering', body: 'Kotlin, SwiftUI and Jetpack Compose, built natively.' },
+  { title: 'Research', body: 'Field research with the people our work is for.' },
+];
+const subject = encodeURIComponent('Careers at Rachna Labs');
+---
+
+<section id="careers" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="grid gap-12 px-2 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-24 lg:px-10" data-reveal>
+      <div>
+        <p class="chip"><span class="chip-icon"><Briefcase class="size-3.5" /></span>Careers</p>
+        <h2 class="mt-6 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">
+          Build calm technology <span class="accent-italic">with us</span>
+        </h2>
+        <p class="section-lead mt-5 max-w-sm">
+          We are a small team and do not list open roles yet. If you care about craft and the people you build for, we would love to hear from you.
+        </p>
+        <a href={`mailto:${site.email}?subject=${subject}`} class="btn btn-primary btn-lg mt-8">
+          Write to us <ArrowUpRight class="size-4" />
+        </a>
+      </div>
+
+      <ul class="divide-y divide-line self-end border-y border-line">
+        {
+          areas.map((a) => (
+            <li class="grid gap-1 py-6 sm:grid-cols-[160px_1fr] sm:gap-6">
+              <span class="text-[19px] font-light tracking-[-0.01em]">{a.title}</span>
+              <span class="text-[15px] leading-relaxed text-muted-foreground">{a.body}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
