@@ -60,7 +60,7 @@ Hashed build assets (`/_astro/*`) are cached for a year; icons and the social im
 ## SEO
 
 - Per-page `<title>`, meta description, canonical URL, robots and hreflang tags
-- Open Graph and Twitter/X cards, with a 1200×630 preview image (`public/og-image.png`)
+- Open Graph and Twitter/X cards, with a 1200×630 preview image (`public/og.png`)
 - JSON-LD structured data: Organization, WebSite, WebPage, product ItemList, FAQPage and BreadcrumbList
 - `sitemap-index.xml` (via `@astrojs/sitemap`) and a `robots.txt` that points to it
 - Web app manifest, SVG/ICO favicons, Apple touch icon and maskable icon
@@ -72,7 +72,7 @@ Hashed build assets (`/_astro/*`) are cached for a year; icons and the social im
 2. Click **Deploy**. From then on, every push to `master` goes live automatically, and pull requests get their own preview links.
 3. **Custom domain:** `www.rachnalabs.com` is the main domain in Vercel, and `rachnalabs.com` redirects to it. DNS is at Namecheap.
 
-The site is built for `https://www.rachnalabs.com` (`SITE_URL` in `astro.config.mjs`). To change it, set `SITE_URL` in Vercel and run `SITE_URL=<url> npm run icons` locally so the preview image matches.
+The site is built for `https://www.rachnalabs.com` (`SITE_URL` in `astro.config.mjs`). To change it, set `SITE_URL` in Vercel.
 
 ## Before going live
 

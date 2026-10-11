@@ -18,7 +18,7 @@ export function baseSchemas(siteUrl: URL): Schema[] {
       width: 512,
       height: 512,
     },
-    image: new URL('/og-image.png', siteUrl).href,
+    image: new URL('/og.png', siteUrl).href,
     description: site.description,
     slogan: site.tagline,
     email: site.email,
