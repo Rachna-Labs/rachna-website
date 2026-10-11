@@ -13,9 +13,9 @@ interface Props {
 const { class: className, href = '/' } = Astro.props;
 ---
 
-<a href={href} class:list={['inline-flex items-center gap-2.5 text-ink', className]} aria-label="Rachna Labs home">
-  <span class="logo-mark block h-8 w-7 shrink-0" aria-hidden="true" set:html={mark} />
-  <span class="text-[18px] leading-none tracking-[-0.02em]"><span class="font-medium">Rachna</span> <span class="font-light text-muted-foreground">Labs</span></span>
+<a href={href} class:list={['inline-flex items-center gap-2 text-ink', className]} aria-label="Rachna Labs home">
+  <span class="logo-mark block h-[22px] w-[19px] shrink-0" aria-hidden="true" set:html={mark} />
+  <span class="text-[20px] leading-none tracking-[-0.02em]"><span class="font-medium">Rachna</span> <span class="font-light text-muted-foreground">Labs</span></span>
 </a>
 
 <style>

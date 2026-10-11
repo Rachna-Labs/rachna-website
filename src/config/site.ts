@@ -53,7 +53,7 @@ export const site: SiteConfig = {
   legalName: 'Rachna Softech LLP',
   entityType: 'Limited Liability Partnership',
   tagline: 'Technology, crafted around people.',
-  title: 'Rachna Labs (रचना) | Research that turns into technology for people',
+  title: 'Rachna Labs | Research that turns into technology for people',
   description:
     'Rachna Labs (रचना) is an Indian research and product lab. We study everyday problems in food, learning, safety and money, and turn what we learn into calm, careful technology: Plate, Grokul, Beside, Balance and Paparazi.',
   keywords: [
