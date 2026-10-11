@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { product, class: className } = Astro.props;
-const glyphs = { plate: UtensilsCrossed, grokul: BookOpen, beside: MapPin, cashboard: Wallet, paparazi: Camera } as const;
+const glyphs = { plate: UtensilsCrossed, grokul: BookOpen, beside: MapPin, paid: Wallet, paparazi: Camera } as const;
 const Glyph = glyphs[product.key as keyof typeof glyphs];
 ---
 

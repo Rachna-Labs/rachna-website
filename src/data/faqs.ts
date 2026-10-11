@@ -1,11 +1,11 @@
 export const faqs = [
   {
     q: 'What does Rachna Labs do?',
-    a: 'We design, build and run our own family of apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Cashboard for money, Paparazi for small businesses and Sakhi for women’s health.',
+    a: 'We design, build and run our own family of apps for Indian homes: Plate for food, Grokul for learning, Beside for safety, Paid for money, Paparazi for small businesses and Sakhi for women’s health.',
   },
   {
     q: 'Which apps can I use today?',
-    a: 'Sakhi is live on the App Store. Plate and Cashboard are being built, and Grokul, Beside and Paparazi are coming soon. Each app on this page shows where it stands.',
+    a: 'Sakhi is live on the App Store. Plate and Paid are being built, and Grokul, Beside and Paparazi are coming soon. Each app on this page shows where it stands.',
   },
   {
     q: 'What is a Rachna account?',

@@ -253,8 +253,8 @@ html:not(.js) [data-theme="beside"] {
   --glass-edge: rgb(255 255 255 / 0.14);
   --line: rgb(255 255 255 / 0.1);
 }
-:root[data-theme="cashboard"],
-html:not(.js) [data-theme="cashboard"] {
+:root[data-theme="paid"],
+html:not(.js) [data-theme="paid"] {
   --page: #FFF2D2;
   --ink: #2A2008;
   --muted: #76683F;
