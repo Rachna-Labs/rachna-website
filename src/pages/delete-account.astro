@@ -1,0 +1,33 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../config/site';
+
+const toc = [
+  { id: 'in-the-app', label: 'Delete in the app' },
+  { id: 'by-email', label: 'Ask us by email' },
+  { id: 'what-is-deleted', label: 'What is deleted' },
+];
+---
+
+<LegalLayout
+  title="Delete your account"
+  description="How to delete your account and data in Rachna Labs apps, including Paid."
+  summary="You can delete your account and all its data at any time, right inside the app. If you no longer have the app, write to us and we will do it for you."
+  toc={toc}
+>
+  <h2 id="in-the-app">1. Delete in the app</h2>
+  <p>In <strong>Paid</strong>: open the app, tap your name at the top of the home screen to open your profile, then tap <strong>Delete account</strong> and confirm.</p>
+  <p>Other Rachna Labs apps have the same option in their profile or settings screen.</p>
+
+  <h2 id="by-email">2. Ask us by email</h2>
+  <p>
+    If you cannot open the app, write to <a href={`mailto:${site.email}?subject=Delete my account`}>{site.email}</a> from the email address
+    you signed in with, and tell us which app. We delete the account within 30 days and write back when it is done.
+  </p>
+
+  <h2 id="what-is-deleted">3. What is deleted</h2>
+  <p>
+    Your account, your profile (name and email) and everything you saved in the app, such as income and expense entries, are deleted from our
+    servers and from the phone. We keep nothing after deletion, except where the law requires us to keep a record.
+  </p>
+</LegalLayout>
