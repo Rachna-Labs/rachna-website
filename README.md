@@ -69,7 +69,7 @@ Hashed build assets (`/_astro/*`) are cached for a year; icons and the social im
 ## Deploy on Vercel
 
 1. Go to [vercel.com/new](https://vercel.com/new) and import this GitHub repository. Vercel detects Astro, and the build settings come from `vercel.json`.
-2. Click **Deploy**. From then on, every push to `main` goes live automatically, and pull requests get their own preview links.
+2. Click **Deploy**. From then on, every push to `master` goes live automatically, and pull requests get their own preview links.
 3. **Custom domain:** `www.rachnalabs.com` is the main domain in Vercel, and `rachnalabs.com` redirects to it. DNS is at Namecheap.
 
 The site is built for `https://www.rachnalabs.com` (`SITE_URL` in `astro.config.mjs`). To change it, set `SITE_URL` in Vercel and run `SITE_URL=<url> npm run icons` locally so the preview image matches.
