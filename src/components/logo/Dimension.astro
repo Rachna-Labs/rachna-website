@@ -86,10 +86,10 @@ const angles = [0, 15, 30, 45, 60, 75, 90];
         }
       }
     });
-    // The nib: a filled diamond of two equilateral triangles.
+    // The nib: one filled diamond.
     const { nib } = mark;
     const hw = (nib.right - nib.left) / 2;
-    const mid = (nib.top + nib.bottom) / 2;
+    const mid = nib.mid;
     const hh = mid - nib.apex;
     for (let y = nib.apex; y <= nib.tip; y += 8) {
       for (let x = nib.left; x <= nib.right; x += 8) {

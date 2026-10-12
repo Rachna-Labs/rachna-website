@@ -17,14 +17,16 @@ export const mark = {
   rx: 130.28,
   ry: 121.471,
   veinEnd: 420.905,
-  nib: { left: 96.4581, right: 203.433, x: 149.945, apex: 326.62, top: 419.263, bottom: 426.983, tip: 519.626 },
+  /** The nib: one diamond on the axis, from its top point to its tip. */
+  nib: { left: 96.4581, right: 203.433, x: 149.945, apex: 326.62, mid: 423.123, tip: 519.626 },
 
   leaf: 'M280.603 219.262C280.603 286.346 222.278 340.733 150.323 340.733C78.3685 340.733 20.0431 286.346 20.0431 219.262C20.0431 152.177 150.323 20.0431 150.323 20.0431C150.323 20.0431 280.603 152.167 280.603 219.262Z',
   leafRight: 'M150.323 20.0431C150.323 20.0431 280.603 152.167 280.603 219.262C280.603 286.346 222.278 340.733 150.323 340.733',
   leafLeft: 'M150.323 20.0431C150.323 20.0431 20.0431 152.177 20.0431 219.262C20.0431 286.346 78.3685 340.733 150.323 340.733',
   vein: 'M150.323 20.0431V340.733V420.905',
-  nibTop: 'M203.433 419.263H96.4581L149.945 326.62L203.433 419.263Z',
-  nibBottom: 'M203.433 426.983H96.4581L149.945 519.626L203.433 426.983Z',
+  nibPath: 'M149.945 326.62L203.433 423.123L149.945 519.626L96.4581 423.123Z',
+  nibRight: 'M149.945 326.62L203.433 423.123L149.945 519.626',
+  nibLeft: 'M149.945 326.62L96.4581 423.123L149.945 519.626',
 };
 
 /** Measured facts, shown on the logo page. */
@@ -35,4 +37,8 @@ export const facts = {
   apexAngle: (2 * Math.atan((mark.axis - 20.0431) / (152.177 - mark.apex)) * 180) / Math.PI, // 89.2
   /** Height of the nib over height of the leaf. */
   nibToLeaf: (mark.nib.tip - mark.nib.apex) / (mark.base - mark.apex), // 0.602
+  /** Height of the diamond over its width. */
+  nibRatio: (mark.nib.tip - mark.nib.apex) / (mark.nib.right - mark.nib.left), // 1.804, about 9 : 5
+  /** The angle at the top and bottom points of the diamond. */
+  nibAngle: (2 * Math.atan((mark.nib.right - mark.nib.x) / (mark.nib.mid - mark.nib.apex)) * 180) / Math.PI, // 58.0
 };

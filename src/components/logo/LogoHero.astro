@@ -5,8 +5,8 @@ import { mark, facts } from '../../lib/mark';
 /*
  * The mark is drafted in front of you: guides, then compass work, then a pencil line from
  * the tip of the leaf that ink swells to full weight, then the measurements. Built on the
- * axis, the ellipse of the leaf's lower half, the tangents that meet at the tip, and
- * Euclid's two circles that give the nib its equilateral triangle.
+ * axis, the ellipse of the leaf's lower half, the tangents that meet at the tip, and the
+ * box and diagonal of the nib's diamond.
  *
  * Everything inside the group is in the mark's own units (301 × 528), placed on a
  * 1200 × 680 stage.
@@ -19,7 +19,6 @@ const oy = 70;
 const tx = 130.28 / Math.hypot(130.28, 132.134);
 const ty = 132.134 / Math.hypot(130.28, 132.134);
 const arc = 120;
-const side = nib.right - nib.left;
 
 const chapters = [
   { id: 'meaning', letter: 'A', label: 'Meaning' },
@@ -58,8 +57,8 @@ const chapters = [
             <line class="bp-draw" style="--d:0.5s;--t:0.9s" pathLength="1" x1={axis} y1={apex} x2={axis - tx * 300} y2={apex + ty * 300} />
             <line class="bp-draw" style="--d:0.5s;--t:0.9s" pathLength="1" x1={axis} y1={apex} x2={axis + tx * 300} y2={apex + ty * 300} />
             <path class="bp-draw" style="--d:0.65s;--t:1.4s" pathLength="1" d={`M${axis} ${widest - ry} A${rx} ${ry} 0 1 1 ${axis - 0.01} ${widest - ry}`} />
-            <circle class="bp-draw" style="--d:1s;--t:1.3s" pathLength="1" cx={nib.left} cy={nib.top} r={side} transform={`rotate(-90 ${nib.left} ${nib.top})`} />
-            <circle class="bp-draw" style="--d:1.1s;--t:1.3s" pathLength="1" cx={nib.right} cy={nib.top} r={side} transform={`rotate(-90 ${nib.right} ${nib.top})`} />
+            <path class="bp-draw" style="--d:1s;--t:1.2s" pathLength="1" d={`M${nib.x} ${nib.apex}H${nib.right}V${nib.tip}H${nib.left}V${nib.apex}Z`} />
+            <line class="bp-draw" style="--d:1.4s;--t:0.8s" pathLength="1" x1={nib.left - 40} y1={nib.mid} x2={nib.right + 40} y2={nib.mid} />
           </g>
 
           <!-- 3. The mark: a pencil line from the tip, then ink fills it to full weight -->
@@ -70,15 +69,14 @@ const chapters = [
           </g>
           <!-- The nib: traced in pencil, then ink flows down into it from the leaf -->
           <g stroke="#111111" stroke-width="1.6" stroke-linejoin="round">
-            <path class="bp-draw" style="--d:2.3s;--t:0.7s" pathLength="1" d={`M${nib.x} ${nib.apex}L${nib.right} ${nib.top}L${nib.left} ${nib.top}Z`} />
-            <path class="bp-draw" style="--d:2.45s;--t:0.7s" pathLength="1" d={`M${nib.right} ${nib.bottom}L${nib.x} ${nib.tip}L${nib.left} ${nib.bottom}Z`} />
+            <path class="bp-draw" style="--d:2.3s;--t:0.8s" pathLength="1" d={mark.nibRight} />
+            <path class="bp-draw" style="--d:2.3s;--t:0.8s" pathLength="1" d={mark.nibLeft} />
           </g>
           <clipPath id="nib-flow">
             <rect class="nib-flow" style="--d:3s" x={nib.left - 10} y={nib.apex - 10} width={nib.right - nib.left + 20} height={nib.tip - nib.apex + 20} />
           </clipPath>
           <g clip-path="url(#nib-flow)" fill="#111111" stroke="#111111" stroke-width={mark.nibStroke}>
-            <path d={mark.nibTop} />
-            <path d={mark.nibBottom} />
+            <path d={mark.nibPath} />
           </g>
 
           <!-- 4. Measurements -->
@@ -116,7 +114,7 @@ const chapters = [
             <text class="bp-rise" style="--d:3.5s" x={-98} y={(widest + base) / 2 + 4} text-anchor="end">b</text>
             <text class="bp-rise" style="--d:3.6s" x={-98} y={base + 34} text-anchor="end">a : b = 1 : <tspan data-count={facts.leafRatio.toFixed(2)} data-dec="2">{facts.leafRatio.toFixed(2)}</tspan></text>
             <text class="bp-rise" style="--d:3.7s" x={-98} y={base + 52} text-anchor="end">φ = 1.618</text>
-            <text class="bp-rise" style="--d:3.75s" x={-98} y={nib.top + 4} text-anchor="end">60° · Euclid, Elements I.1</text>
+            <text class="bp-rise" style="--d:3.75s" x={-98} y={nib.mid + 4} text-anchor="end">one diamond · 9 : 5</text>
             <text class="bp-rise" style="--d:3.55s" x={20} y={widest + 76} text-anchor="middle">x</text>
             <text class="bp-rise" style="--d:3.6s" x={448} y={(apex + base) / 2 + 4}>5</text>
             <text class="bp-rise" style="--d:3.7s" x={448} y={(nib.apex + nib.tip) / 2 + 4}>3</text>

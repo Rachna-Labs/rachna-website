@@ -85,10 +85,7 @@ const fy = (i: number) => 60 + i * gap;
                       )}
                       {others.includes('vein') && <path d={mark.vein} stroke="#6A6A6A" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />}
                       {others.includes('nib') && (
-                        <>
-                          <path d={mark.nibTop} stroke="#6A6A6A" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
-                          <path d={mark.nibBottom} stroke="#6A6A6A" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
-                        </>
+                        <path d={mark.nibPath} stroke="#6A6A6A" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
                       )}
                     </g>
                     <MarkG parts={[p.part]} color="#FFFFFF" />

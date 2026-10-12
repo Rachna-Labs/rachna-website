@@ -4,7 +4,10 @@ import { mark, facts } from '../../lib/mark';
 
 /* The dimensioned drawing: the mark on a grid of its own stroke weight, with six callouts. */
 const { axis, apex, widest, base, rx, ry, nib, stroke } = mark;
-const side = nib.right - nib.left;
+// Unit direction from the nib's tip up each of its lower sides.
+const nh = Math.hypot(nib.right - nib.x, nib.tip - nib.mid);
+const nx = (nib.right - nib.x) / nh;
+const ny = (nib.tip - nib.mid) / nh;
 const outer = { w: 300.6, h: 360.8 };
 const tx = 130.28 / Math.hypot(130.28, 132.134);
 const ty = 132.134 / Math.hypot(130.28, 132.134);
@@ -15,7 +18,7 @@ const rows = Array.from({ length: 16 }, (_, i) => (i - 1) * stroke);
 const items = [
   { n: 1, value: `1 : ${facts.leafRatio.toFixed(2)}`, title: 'The golden cut', body: 'From the tip to the widest point, against the widest point to the base. Within 1.4% of the golden ratio, 1.618, long used in art and architecture for forms that feel balanced.' },
   { n: 2, value: `${facts.apexAngle.toFixed(1)}°`, title: 'A right-angled tip', body: 'The two curves meet at almost exactly 90°. Sharper would feel aggressive; blunter would lose the point.' },
-  { n: 3, value: '60°', title: 'An equilateral nib', body: "Two equilateral triangles, base to base, drawn with Euclid's first construction. It is the triangle that tiles the isometric grid, and the shape engineers trust because it cannot bend out of shape." },
+  { n: 3, value: '9 : 5', title: 'One diamond', body: `The nib is a single diamond, nine units tall for every five wide, its points sharpened to ${facts.nibAngle.toFixed(0)}°. Its top point rises into the base of the leaf, so the pen grows out of the leaf instead of sitting under it.` },
   { n: 4, value: '5 : 6', title: 'A measured leaf', body: 'With its stroke, the leaf fits a 5 by 6 rectangle exactly. Its lower half is an ellipse, almost a circle: 0.93 tall for every 1 wide.' },
   { n: 5, value: '3 : 5', title: 'Fibonacci heights', body: "The nib is three fifths of the leaf's height. Three and five are neighbours in the Fibonacci sequence, whose ratios close in on φ." },
   { n: 6, value: 'x', title: 'One stroke', body: 'Leaf and axis share one weight, x = 40 units. The mark is 7.5x wide and about 13x tall, so it sits cleanly on any grid.' },
@@ -25,7 +28,7 @@ const items = [
 const callouts: [number, number][] = [
   [-118, (apex + base) / 2],
   [axis + 86, apex - 6],
-  [nib.right + 74, nib.top + 52],
+  [nib.right + 74, nib.mid + 52],
   [outer.w + 34, -24],
   [452, (nib.apex + nib.tip) / 2 + 40],
   [stroke / 2, widest + 104],
@@ -57,8 +60,8 @@ const thin = { 'vector-effect': 'non-scaling-stroke' } as const;
             <rect x={0} y={0} width={outer.w} height={outer.h} />
             <line x1={axis} y1={apex} x2={axis - tx * 260} y2={apex + ty * 260} />
             <line x1={axis} y1={apex} x2={axis + tx * 260} y2={apex + ty * 260} />
-            <circle cx={nib.left} cy={nib.top} r={side} />
-            <circle cx={nib.right} cy={nib.top} r={side} />
+            <rect x={nib.left} y={nib.apex} width={nib.right - nib.left} height={nib.tip - nib.apex} />
+            <line x1={nib.left - 40} y1={nib.mid} x2={nib.right + 40} y2={nib.mid} />
             <line x1={-150} y1={widest} x2={470} y2={widest} />
           </g>
 
@@ -67,7 +70,7 @@ const thin = { 'vector-effect': 'non-scaling-stroke' } as const;
           <!-- Angles -->
           <g stroke="#111111" stroke-width="1.2" {...thin}>
             <path d={`M${axis - tx * 120} ${apex + ty * 120} A120 120 0 0 0 ${axis + tx * 120} ${apex + ty * 120}`} />
-            <path d={`M${nib.x - 20} ${nib.tip - 34.64} A40 40 0 0 1 ${nib.x + 20} ${nib.tip - 34.64}`} stroke="#FFFFFF" />
+            <path d={`M${nib.x - nx * 44} ${nib.tip - ny * 44} A44 44 0 0 1 ${nib.x + nx * 44} ${nib.tip - ny * 44}`} stroke="#FFFFFF" />
           </g>
 
           <!-- Dimensions -->
@@ -91,7 +94,8 @@ const thin = { 'vector-effect': 'non-scaling-stroke' } as const;
             <text x={384} y={(apex + base) / 2 + 4}>5</text>
             <text x={414} y={(nib.apex + nib.tip) / 2 + 4}>3</text>
             <text x={axis + 96} y={apex + 52}>{facts.apexAngle.toFixed(1)}°</text>
-            <text x={nib.right + side + 8} y={nib.top + 4}>60°</text>
+            <text x={nib.x + 30} y={nib.tip + 8}>{facts.nibAngle.toFixed(0)}°</text>
+            <text x={nib.right + 48} y={nib.mid + 4}>9 : 5</text>
           </g>
 
           {

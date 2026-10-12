@@ -32,8 +32,7 @@ const line = { stroke: color, 'stroke-width': mark.stroke, 'stroke-linecap': 'ro
   {
     has('nib') && (
       <g fill={color} stroke={color} stroke-width={mark.nibStroke}>
-        <path d={mark.nibTop} />
-        <path d={mark.nibBottom} />
+        <path d={mark.nibPath} />
       </g>
     )
   }
