@@ -1,0 +1,49 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import MarkG from './MarkG.astro';
+import { mark } from '../../lib/mark';
+
+const sources = [
+  'Köhler, W. (1929). Gestalt Psychology. Liveright.',
+  'Ramachandran, V. S., & Hubbard, E. M. (2001). Synaesthesia: a window into perception, thought and language. Journal of Consciousness Studies, 8(12).',
+  'Bar, M., & Neta, M. (2006). Humans prefer curved visual objects. Psychological Science, 17(8).',
+  'Wagemans, J. (1997). Characteristics and models of human symmetry detection. Trends in Cognitive Sciences, 1(9).',
+  'Wertheimer, M. (1923). Laws of organization in perceptual forms. Psychologische Forschung, 4.',
+  'Rubin, E. (1915). Synsoplevede Figurer (Visually experienced figures). Gyldendal.',
+  'Euclid (c. 300 BCE). Elements, Book I, Proposition 1.',
+  'W3C (2023). Web Content Accessibility Guidelines 2.2, contrast ratio.',
+];
+---
+
+<section class="border-t border-line py-24 sm:py-32">
+  <div class="container-text text-center" data-reveal>
+    <svg viewBox={`0 0 ${mark.width} ${mark.height}`} class="mx-auto h-20 w-auto" aria-hidden="true"><MarkG /></svg>
+    <h2 class="mx-auto mt-10 max-w-3xl font-display text-[2.4rem] leading-[1.1] font-light tracking-[-0.035em] sm:text-[3.4rem]">
+      Look closely. Write clearly. Build <span class="accent-italic">carefully.</span>
+    </h2>
+    <p class="mx-auto mt-7 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
+      The leaf is the people we build for. The nib is the research we do for them. The line between them is our promise: research that turns into technology for people.
+    </p>
+    <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+      <a href="/#research" class="btn btn-primary btn-lg">Explore our research</a>
+      <a href="/#contact" data-topic="Business enquiry" class="text-link">Contact us <ArrowRight class="size-4" /></a>
+    </div>
+  </div>
+
+  <div class="container-x mt-24">
+    <details class="group border-t border-line px-2 sm:px-6 lg:px-10">
+      <summary class="flex cursor-pointer list-none items-center justify-between py-5 text-[13px] text-muted-foreground hover:text-ink">
+        <span class="font-mono tracking-[0.08em] uppercase">Sources and method</span>
+        <span class="text-[18px] leading-none transition-transform group-open:rotate-45">+</span>
+      </summary>
+      <div class="grid gap-8 pb-8 lg:grid-cols-[1fr_2fr]">
+        <p class="text-[13.5px] leading-relaxed text-muted-foreground">
+          Measurements are taken from the master drawing of the mark (301 × 528 units) and rounded to two decimals. The psychology describes how people tend to see shapes in general; it is the reasoning behind our choices, not a test of this mark.
+        </p>
+        <ol class="space-y-2 text-[13px] leading-relaxed text-muted-foreground">
+          {sources.map((s) => <li>{s}</li>)}
+        </ol>
+      </div>
+    </details>
+  </div>
+</section>

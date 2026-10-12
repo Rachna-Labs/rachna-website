@@ -1,0 +1,126 @@
+---
+import MarkG from './MarkG.astro';
+import { mark, facts } from '../../lib/mark';
+
+/* The dimensioned drawing: the mark on a grid of its own stroke weight, with six callouts. */
+const { axis, apex, widest, base, rx, ry, nib, stroke } = mark;
+const side = nib.right - nib.left;
+const outer = { w: 300.6, h: 360.8 };
+const tx = 130.28 / Math.hypot(130.28, 132.134);
+const ty = 132.134 / Math.hypot(130.28, 132.134);
+
+const cols = Array.from({ length: 16 }, (_, i) => (i - 4) * stroke);
+const rows = Array.from({ length: 16 }, (_, i) => (i - 1) * stroke);
+
+const items = [
+  { n: 1, value: `1 : ${facts.leafRatio.toFixed(2)}`, title: 'The golden cut', body: 'From the tip to the widest point, against the widest point to the base. Within 1.4% of the golden ratio, 1.618, long used in art and architecture for forms that feel balanced.' },
+  { n: 2, value: `${facts.apexAngle.toFixed(1)}°`, title: 'A right-angled tip', body: 'The two curves meet at almost exactly 90°. Sharper would feel aggressive; blunter would lose the point.' },
+  { n: 3, value: '60°', title: 'An equilateral nib', body: "Two equilateral triangles, base to base, drawn with Euclid's first construction. It is the triangle that tiles the isometric grid, and the shape engineers trust because it cannot bend out of shape." },
+  { n: 4, value: '5 : 6', title: 'A measured leaf', body: 'With its stroke, the leaf fits a 5 by 6 rectangle exactly. Its lower half is an ellipse, almost a circle: 0.93 tall for every 1 wide.' },
+  { n: 5, value: '3 : 5', title: 'Fibonacci heights', body: "The nib is three fifths of the leaf's height. Three and five are neighbours in the Fibonacci sequence, whose ratios close in on φ." },
+  { n: 6, value: 'x', title: 'One stroke', body: 'Leaf and axis share one weight, x = 40 units. The mark is 7.5x wide and about 13x tall, so it sits cleanly on any grid.' },
+];
+
+// Callout positions, in the mark's units.
+const callouts: [number, number][] = [
+  [-118, (apex + base) / 2],
+  [axis + 86, apex - 6],
+  [nib.right + 74, nib.top + 52],
+  [outer.w + 34, -24],
+  [452, (nib.apex + nib.tip) / 2 + 40],
+  [stroke / 2, widest + 104],
+];
+const thin = { 'vector-effect': 'non-scaling-stroke' } as const;
+---
+
+<section id="geometry" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="px-2 sm:px-6 lg:px-10" data-reveal>
+      <p class="font-mono text-[12px] tracking-[0.12em] text-muted-foreground uppercase">C · Geometry</p>
+      <div class="mt-5 grid gap-6 lg:grid-cols-2 lg:items-end">
+        <h2 class="font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">A blueprint for <span class="accent-italic">proportion</span></h2>
+        <p class="max-w-md text-[16px] leading-relaxed text-muted-foreground lg:justify-self-end">Nothing in the mark is arbitrary. Every number here is measured from the master drawing, 301 by 528 units.</p>
+      </div>
+    </div>
+
+    <div class="mt-14 grid items-start gap-12 px-2 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-10">
+      <div class="relative lg:sticky lg:top-24" data-reveal>
+        <svg viewBox="-200 -80 720 700" class="h-auto w-full" fill="none" role="img" aria-label="Construction drawing of the mark with its proportions">
+          <g stroke="#F0F0F0" {...thin}>
+            {cols.map((x) => <line x1={x} y1={rows[0]} x2={x} y2={rows[rows.length - 1]} />)}
+            {rows.map((y) => <line x1={cols[0]} y1={y} x2={cols[cols.length - 1]} y2={y} />)}
+          </g>
+
+          <g stroke="#CFCFCF" stroke-dasharray="4 5" {...thin}>
+            <line x1={axis} y1={-60} x2={axis} y2={580} />
+            <ellipse cx={axis} cy={widest} rx={rx} ry={ry} />
+            <rect x={0} y={0} width={outer.w} height={outer.h} />
+            <line x1={axis} y1={apex} x2={axis - tx * 260} y2={apex + ty * 260} />
+            <line x1={axis} y1={apex} x2={axis + tx * 260} y2={apex + ty * 260} />
+            <circle cx={nib.left} cy={nib.top} r={side} />
+            <circle cx={nib.right} cy={nib.top} r={side} />
+            <line x1={-150} y1={widest} x2={470} y2={widest} />
+          </g>
+
+          <MarkG />
+
+          <!-- Angles -->
+          <g stroke="#111111" stroke-width="1.2" {...thin}>
+            <path d={`M${axis - tx * 120} ${apex + ty * 120} A120 120 0 0 0 ${axis + tx * 120} ${apex + ty * 120}`} />
+            <path d={`M${nib.x - 20} ${nib.tip - 34.64} A40 40 0 0 1 ${nib.x + 20} ${nib.tip - 34.64}`} stroke="#FFFFFF" />
+          </g>
+
+          <!-- Dimensions -->
+          <g stroke="#8A8A8A" {...thin}>
+            <line x1={-80} y1={apex} x2={-80} y2={base} />
+            {[apex, widest, base].map((y) => <line x1={-88} y1={y} x2={-72} y2={y} />)}
+            <line x1={0} y1={-40} x2={outer.w} y2={-40} />
+            {[0, outer.w].map((x) => <line x1={x} y1={-48} x2={x} y2={-32} />)}
+            <line x1={370} y1={apex} x2={370} y2={base} />
+            <line x1={400} y1={nib.apex} x2={400} y2={nib.tip} />
+            {[apex, base].map((y) => <line x1={362} y1={y} x2={378} y2={y} />)}
+            {[nib.apex, nib.tip].map((y) => <line x1={392} y1={y} x2={408} y2={y} />)}
+            <line x1={0} y1={widest + 70} x2={stroke} y2={widest + 70} />
+            {[0, stroke].map((x) => <line x1={x} y1={widest + 62} x2={x} y2={widest + 78} />)}
+          </g>
+
+          <g class="font-mono" font-size="13" fill="#8A8A8A" letter-spacing="0.04em">
+            <text x={-96} y={(apex + widest) / 2 + 4} text-anchor="end">a</text>
+            <text x={-96} y={(widest + base) / 2 + 4} text-anchor="end">b</text>
+            <text x={outer.w / 2} y={-54} text-anchor="middle">7.5x</text>
+            <text x={384} y={(apex + base) / 2 + 4}>5</text>
+            <text x={414} y={(nib.apex + nib.tip) / 2 + 4}>3</text>
+            <text x={axis + 96} y={apex + 52}>{facts.apexAngle.toFixed(1)}°</text>
+            <text x={nib.right + side + 8} y={nib.top + 4}>60°</text>
+          </g>
+
+          {
+            callouts.map(([x, y], i) => (
+              <g>
+                <circle cx={x} cy={y} r="14" fill="#111111" />
+                <text x={x} y={y + 4.5} text-anchor="middle" font-size="13" fill="#FFFFFF" class="font-mono">
+                  {i + 1}
+                </text>
+              </g>
+            ))
+          }
+        </svg>
+      </div>
+
+      <ol class="grid sm:grid-cols-2 sm:gap-x-8">
+        {
+          items.map((it, i) => (
+            <li class="border-t border-line py-7" data-reveal style={`--reveal-delay: ${(i % 2) * 80}ms`}>
+              <div class="flex items-center gap-3">
+                <span class="flex size-6 items-center justify-center rounded-full bg-ink font-mono text-[11px] text-white">{it.n}</span>
+                <span class="text-[13px] text-muted-foreground">{it.title}</span>
+              </div>
+              <p class="mt-4 font-display text-[2.6rem] leading-none font-light tracking-[-0.03em] tabular-nums">{it.value}</p>
+              <p class="mt-4 text-[14.5px] leading-relaxed text-muted-foreground">{it.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,71 @@
+---
+import MarkG from './MarkG.astro';
+import { mark } from '../../lib/mark';
+
+/* How the mark is used: sizes, clear space, and its two colours. */
+const sizes = [16, 24, 32, 48, 72, 120];
+const x = mark.stroke;
+const space = 2 * x;
+---
+
+<section id="system" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="px-2 sm:px-6 lg:px-10" data-reveal>
+      <p class="font-mono text-[12px] tracking-[0.12em] text-muted-foreground uppercase">F · System</p>
+      <div class="mt-5 grid gap-6 lg:grid-cols-2 lg:items-end">
+        <h2 class="font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Built to be <span class="accent-italic">used</span></h2>
+        <p class="max-w-md text-[16px] leading-relaxed text-muted-foreground lg:justify-self-end">A browser tab, an app icon, a printed page. The mark has to hold at every size, so its rules are few and strict.</p>
+      </div>
+    </div>
+
+    <div class="mt-14 grid gap-x-8 px-2 sm:px-6 lg:grid-cols-3 lg:px-10">
+      <div class="border-t border-line py-8" data-reveal>
+        <div class="flex h-56 items-end justify-between gap-2">
+          {
+            sizes.map((s) => (
+              <div class="flex flex-col items-center gap-3">
+                <svg viewBox={`0 0 ${mark.width} ${mark.height}`} style={`height:${s}px`} class="w-auto" aria-hidden="true">
+                  <MarkG />
+                </svg>
+                <span class="font-mono text-[11px] text-muted-foreground">{s}</span>
+              </div>
+            ))
+          }
+        </div>
+        <h3 class="mt-6 text-[19px] font-light tracking-[-0.01em]">Every size</h3>
+        <p class="mt-2 text-[14.5px] leading-relaxed text-muted-foreground">One weight and no fine detail, so the mark reads from 16 pixels up. In a browser tab it sits inside a white circle, which works on light and dark themes alike.</p>
+      </div>
+
+      <div class="border-t border-line py-8" data-reveal style="--reveal-delay: 80ms">
+        <div class="flex h-56 items-center justify-center">
+          <svg viewBox={`${-space - 10} ${-space - 10} ${mark.width + 2 * space + 20} ${mark.height + 2 * space + 20}`} class="h-full w-auto" fill="none" aria-hidden="true">
+            <rect x={-space} y={-space} width={mark.width + 2 * space} height={mark.height + 2 * space} fill="#F4F4F4" />
+            <rect x={0} y={0} width={mark.width} height={mark.height} fill="#FFFFFF" stroke="#CFCFCF" stroke-dasharray="8 8" stroke-width="2" />
+            <MarkG />
+            <g class="font-mono" font-size="34" fill="#8A8A8A" text-anchor="middle">
+              <text x={mark.width / 2} y={-space / 2 + 12}>2x</text>
+              <text x={mark.width / 2} y={mark.height + space / 2 + 12}>2x</text>
+              <text x={-space / 2} y={mark.height / 2 + 12}>2x</text>
+              <text x={mark.width + space / 2} y={mark.height / 2 + 12}>2x</text>
+            </g>
+          </svg>
+        </div>
+        <h3 class="mt-6 text-[19px] font-light tracking-[-0.01em]">Room to breathe</h3>
+        <p class="mt-2 text-[14.5px] leading-relaxed text-muted-foreground">Keep a clear space of 2x on every side, twice the stroke weight. Nothing else enters it: no text, no edges, no other marks.</p>
+      </div>
+
+      <div class="border-t border-line py-8" data-reveal style="--reveal-delay: 160ms">
+        <div class="grid h-56 grid-cols-2 gap-2">
+          <div class="flex items-center justify-center rounded-[20px] border border-line bg-white">
+            <svg viewBox={`0 0 ${mark.width} ${mark.height}`} class="h-28 w-auto" aria-hidden="true"><MarkG /></svg>
+          </div>
+          <div class="flex items-center justify-center rounded-[20px] bg-ink">
+            <svg viewBox={`0 0 ${mark.width} ${mark.height}`} class="h-28 w-auto" aria-hidden="true"><MarkG color="#FFFFFF" /></svg>
+          </div>
+        </div>
+        <h3 class="mt-6 text-[19px] font-light tracking-[-0.01em]">Two colours</h3>
+        <p class="mt-2 text-[14.5px] leading-relaxed text-muted-foreground">Black on white, or white on black. No gradients, shadows, outlines or extra leaves, and never stretched, rotated or recoloured.</p>
+      </div>
+    </div>
+  </div>
+</section>

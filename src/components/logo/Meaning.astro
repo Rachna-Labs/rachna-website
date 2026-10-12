@@ -1,0 +1,109 @@
+---
+import MarkG from './MarkG.astro';
+import { mark } from '../../lib/mark';
+
+/*
+ * An exploded isometric view: the mark taken apart into its three parts, each lying on
+ * its own plane, stacked in the order the eye reads them.
+ */
+const parts = [
+  { part: 'leaf' as const, n: '01', name: 'Leaf', idea: 'Life', body: 'Food, learning, safety, money, wellbeing: the everyday things we study. The leaf keeps the lab human, never cold.' },
+  { part: 'vein' as const, n: '02', name: 'Axis', idea: 'Method', body: 'One line from the tip of the leaf to the tip of the pen. One standard of evidence, one Rachna account, many products.' },
+  { part: 'nib' as const, n: '03', name: 'Nib', idea: 'Craft', body: 'Where research becomes something written down and built. We observe first, write what is true, then build.' },
+];
+
+const iso = 'matrix(0.866 0.5 -0.866 0.5 0 0)';
+const pad = 36;
+const frame = { x: -pad, y: -pad, w: mark.width + 2 * pad, h: mark.height + 2 * pad };
+const project = (x: number, y: number): [number, number] => [(x - y) * 0.866, (x + y) * 0.5];
+const corners = [
+  project(frame.x, frame.y),
+  project(frame.x + frame.w, frame.y),
+  project(frame.x + frame.w, frame.y + frame.h),
+  project(frame.x, frame.y + frame.h),
+];
+const ex = 560;
+const gap = 230;
+const fy = (i: number) => 60 + i * gap;
+---
+
+<section id="meaning" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="grid items-center gap-14 px-2 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-10 lg:px-10">
+      <div data-reveal>
+        <p class="font-mono text-[12px] tracking-[0.12em] text-muted-foreground uppercase">A · Meaning</p>
+        <h2 class="mt-5 font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Two ideas, held by <span class="accent-italic">one line</span></h2>
+        <p class="mt-6 max-w-lg text-[16px] leading-relaxed text-muted-foreground">
+          Rachna (रचना) means creation: to compose, to make something with care. A lab that creates has to hold two things together, life as people really live it and the discipline to study it honestly. The mark draws both, and the line that joins them.
+        </p>
+
+        <ol class="mt-10 max-w-lg">
+          {
+            parts.map((p) => (
+              <li class="grid grid-cols-[3rem_1fr] border-t border-line py-6">
+                <span class="font-mono text-[12px] text-muted-foreground">{p.n}</span>
+                <div>
+                  <h3 class="text-[19px] font-light tracking-[-0.01em]">
+                    {p.name} <span class="text-muted-foreground">· {p.idea}</span>
+                  </h3>
+                  <p class="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">{p.body}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="mt-2 max-w-lg border-t border-line pt-6 text-[15px] leading-relaxed text-graphite">
+          Read from top to bottom, the mark is our method: <span class="text-ink">observe, understand, build.</span>
+        </p>
+      </div>
+
+      <div class="flex justify-center" data-reveal style="--reveal-delay: 120ms">
+        <svg viewBox="30 0 1000 1000" class="h-auto w-full max-w-[640px]" fill="none" role="img" aria-label="The mark taken apart into three layers: leaf, axis and nib">
+          <!-- Connectors between the planes -->
+          <g stroke="#D2D2D2" stroke-dasharray="3 5">
+            {corners.map(([x, y]) => <line x1={ex + x} y1={fy(0) + y} x2={ex + x} y2={fy(2) + y} />)}
+          </g>
+
+          {
+            [...parts].reverse().map((p, ri) => {
+              const i = parts.length - 1 - ri;
+              const others = parts.filter((o) => o.part !== p.part).map((o) => o.part);
+              const [lx, ly] = corners[1];
+              return (
+                <g>
+                  <g transform={`translate(${ex} ${fy(i) + 12}) ${iso}`}>
+                    <MarkG parts={[p.part]} color="#DDDDDD" />
+                  </g>
+                  <g transform={`translate(${ex} ${fy(i)}) ${iso}`}>
+                    <rect x={frame.x} y={frame.y} width={frame.w} height={frame.h} fill="#FFFFFF" fill-opacity="0.82" stroke="#CFCFCF" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
+                    <g opacity="0.5">
+                      {others.includes('leaf') && (
+                        <>
+                          <path d={mark.leafRight} stroke="#BDBDBD" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
+                          <path d={mark.leafLeft} stroke="#BDBDBD" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
+                        </>
+                      )}
+                      {others.includes('vein') && <path d={mark.vein} stroke="#BDBDBD" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />}
+                      {others.includes('nib') && (
+                        <>
+                          <path d={mark.nibTop} stroke="#BDBDBD" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
+                          <path d={mark.nibBottom} stroke="#BDBDBD" stroke-dasharray="4 5" vector-effect="non-scaling-stroke" />
+                        </>
+                      )}
+                    </g>
+                    <MarkG parts={[p.part]} />
+                  </g>
+                  <g class="font-mono" font-size="17" letter-spacing="0.08em">
+                    <line x1={ex + lx + 8} y1={fy(i) + ly} x2={ex + lx + 40} y2={fy(i) + ly} stroke="#BDBDBD" />
+                    <text x={ex + lx + 50} y={fy(i) + ly + 6} fill="#111111">{p.n}</text>
+                    <text x={ex + lx + 50} y={fy(i) + ly + 30} fill="#8A8A8A">{p.name.toUpperCase()}</text>
+                  </g>
+                </g>
+              );
+            })
+          }
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>

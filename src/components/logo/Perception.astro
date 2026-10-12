@@ -1,0 +1,146 @@
+---
+import MarkG from './MarkG.astro';
+import { mark } from '../../lib/mark';
+
+/* How the mind reads the mark, each idea with a small diagram and its source. */
+const { axis, apex, nib } = mark;
+
+const star = Array.from({ length: 18 }, (_, i) => {
+  const a = (i / 18) * Math.PI * 2 - Math.PI / 2;
+  const r = i % 2 ? 16 : 44;
+  return `${(176 + Math.cos(a) * r).toFixed(1)} ${(80 + Math.sin(a) * r).toFixed(1)}`;
+}).join(' L');
+
+const items = [
+  {
+    key: 'bouba',
+    title: 'Soft above, sharp below',
+    body: 'People everywhere match a rounded shape with a soft word and a spiky shape with a sharp one. The leaf reads as warm and safe; the nib reads as exact. Care and rigour, in one sign.',
+    source: 'Köhler, 1929 · Ramachandran & Hubbard, 2001',
+  },
+  {
+    key: 'curve',
+    title: 'Curves feel safe',
+    body: 'People prefer objects with curved contours to the same objects with sharp angles. The outline you meet first, the leaf, is all curve, so the first feeling is calm. The only sharp point sits at the end, where precision belongs.',
+    source: 'Bar & Neta, 2006',
+  },
+  {
+    key: 'symmetry',
+    title: 'Symmetry reads as order',
+    body: 'The visual system finds mirror symmetry almost at once and takes it as a sign of structure. One vertical axis makes the mark feel stable, which matters for products people trust with their money, learning and safety.',
+    source: 'Wagemans, 1997',
+  },
+  {
+    key: 'continuation',
+    title: 'The eye follows the line',
+    body: 'Gestalt psychology calls it good continuation: the eye follows a line to its end. The axis runs from the tip of the leaf to the tip of the nib, so the mark is read in the order of our method: observe, then write, then build.',
+    source: 'Wertheimer, 1923',
+  },
+  {
+    key: 'ground',
+    title: 'Two halves, one page',
+    body: 'White space is part of the figure. The vein divides the leaf into two open halves, like the facing pages of a notebook. Nothing inside the mark is hidden.',
+    source: 'Rubin, 1915',
+  },
+  {
+    key: 'contrast',
+    title: 'Ink on paper',
+    body: 'Black on white is the highest contrast a screen can show, 21 to 1, so the mark stays sharp at 16 pixels and on paper alike. It carries no colour of its own, so every product keeps its own.',
+    source: 'WCAG 2.2 contrast ratio',
+  },
+];
+const faint = { stroke: '#CFCFCF', 'stroke-dasharray': '4 5', 'vector-effect': 'non-scaling-stroke' } as const;
+const label = { class: 'font-mono', 'font-size': '11', fill: '#8A8A8A', 'letter-spacing': '0.08em' } as const;
+const m = (scale: number, x: number, y: number) => `translate(${x} ${y}) scale(${scale})`;
+---
+
+<section id="perception" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="px-2 sm:px-6 lg:px-10" data-reveal>
+      <p class="font-mono text-[12px] tracking-[0.12em] text-muted-foreground uppercase">D · Perception</p>
+      <div class="mt-5 grid gap-6 lg:grid-cols-2 lg:items-end">
+        <h2 class="font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">How the mind <span class="accent-italic">reads it</span></h2>
+        <p class="max-w-md text-[16px] leading-relaxed text-muted-foreground lg:justify-self-end">A mark is seen before it is understood. These are the findings from perception research that shaped what people feel in the first second.</p>
+      </div>
+    </div>
+
+    <ul class="mt-14 grid gap-x-8 px-2 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:px-10">
+      {
+        items.map((it, i) => (
+          <li class="border-t border-line py-8" data-reveal style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+            <div class="relative flex h-48 items-center justify-center">
+              <div class="dots fade-dots absolute inset-0" />
+              <svg viewBox="0 0 260 160" class="relative h-full w-auto max-w-full" fill="none" aria-hidden="true">
+                {it.key === 'bouba' && (
+                  <>
+                    <path d="M76 38 C106 36 120 58 116 82 C112 108 96 122 70 120 C44 118 30 102 32 78 C34 52 50 40 76 38Z" fill="#111111" />
+                    <path d={`M${star}Z`} fill="#111111" />
+                    <text x="74" y="150" text-anchor="middle" {...label}>BOUBA</text>
+                    <text x="176" y="150" text-anchor="middle" {...label}>KIKI</text>
+                  </>
+                )}
+                {it.key === 'curve' && (
+                  <>
+                    <MarkG parts={['leaf', 'vein']} transform={m(0.26, 92, 6)} />
+                    <MarkG parts={['nib']} color="#BDBDBD" transform={m(0.26, 92, 6)} />
+                    <line x1="172" y1="54" x2="200" y2="54" stroke="#BDBDBD" />
+                    <line x1="160" y1="122" x2="200" y2="122" stroke="#BDBDBD" />
+                    <text x="206" y="58" {...label}>CURVE</text>
+                    <text x="206" y="126" {...label}>POINT</text>
+                  </>
+                )}
+                {it.key === 'symmetry' && (
+                  <g transform={m(0.26, 91, 6)}>
+                    <line x1={axis} y1={-10} x2={axis} y2={540} {...faint} />
+                    <path d={mark.leafLeft} stroke="#111111" stroke-width={mark.stroke} stroke-linecap="round" />
+                    <path d={mark.leafRight} stroke="#9A9A9A" stroke-dasharray="10 12" stroke-width="3" />
+                    <MarkG parts={['vein', 'nib']} />
+                    <path d="M-60 219 h-60 m0 0 l16 -10 m-16 10 l16 10" stroke="#9A9A9A" stroke-width="3" />
+                    <path d="M360 219 h60 m0 0 l-16 -10 m16 10 l-16 10" stroke="#9A9A9A" stroke-width="3" />
+                  </g>
+                )}
+                {it.key === 'continuation' && (
+                  <g transform={m(0.26, 91, 6)}>
+                    <MarkG color="#E2E2E2" />
+                    <line x1={axis} y1={apex} x2={axis} y2={nib.tip} stroke="#111111" stroke-width="6" stroke-dasharray="2 18" stroke-linecap="round" />
+                    <circle cx={axis} cy={apex} r="16" fill="#111111">
+                      <animate attributeName="cy" values={`${apex};${nib.tip}`} dur="3.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.55 1" />
+                      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.85;1" dur="3.6s" repeatCount="indefinite" />
+                    </circle>
+                  </g>
+                )}
+                {it.key === 'ground' && (
+                  <>
+                    <defs>
+                      <pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <line x1="0" y1="0" x2="0" y2="14" stroke="#9A9A9A" stroke-width="2.5" />
+                      </pattern>
+                    </defs>
+                    <g transform={m(0.26, 91, 6)}>
+                      <path d={mark.leaf} fill="url(#hatch)" />
+                      <MarkG />
+                    </g>
+                    <text x="40" y="70" text-anchor="middle" {...label}>PAGE</text>
+                    <text x="220" y="70" text-anchor="middle" {...label}>PAGE</text>
+                  </>
+                )}
+                {it.key === 'contrast' && (
+                  <>
+                    <rect x="30" y="12" width="96" height="120" rx="14" fill="#111111" />
+                    <rect x="134.5" y="12.5" width="95" height="119" rx="14" fill="#FFFFFF" stroke="#E6E6E6" />
+                    <MarkG color="#FFFFFF" transform={m(0.17, 52.4, 27)} />
+                    <MarkG transform={m(0.17, 156.4, 27)} />
+                    <text x="130" y="152" text-anchor="middle" {...label}>21 : 1</text>
+                  </>
+                )}
+              </svg>
+            </div>
+            <h3 class="mt-6 text-[19px] font-light tracking-[-0.01em]">{it.title}</h3>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-muted-foreground">{it.body}</p>
+            <p class="mt-4 font-mono text-[11px] tracking-[0.04em] text-muted-foreground/80">{it.source}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

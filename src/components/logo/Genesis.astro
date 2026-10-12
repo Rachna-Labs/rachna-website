@@ -1,0 +1,77 @@
+---
+import MarkG from './MarkG.astro';
+import { mark } from '../../lib/mark';
+
+/* How the form was built, one idea at a time, like a sketchbook page. */
+const { axis, apex, widest, rx, ry } = mark;
+const tx = 130.28 / Math.hypot(130.28, 132.134);
+const ty = 132.134 / Math.hypot(130.28, 132.134);
+
+const steps = [
+  { title: 'A point', body: 'Every piece of work begins with one observation.' },
+  { title: 'A circle', body: 'Around it, the world we study: people and their everyday lives.' },
+  { title: 'A drop', body: 'Two curves rise to meet the point. The circle becomes a drop: water, a seed, the start of growth.' },
+  { title: 'A leaf', body: 'Given weight, the drop becomes a leaf, the living thing we care for.' },
+  { title: 'A line', body: 'A vein runs through it and keeps going past the leaf. What we learn has to go somewhere.' },
+  { title: 'A nib', body: 'It ends in a pen nib. What we learn is written down, then built.' },
+];
+const faint = { stroke: '#CFCFCF', 'stroke-dasharray': '4 5', 'vector-effect': 'non-scaling-stroke' } as const;
+---
+
+<section id="genesis" class="scroll-mt-20 border-t border-line py-20 sm:py-28">
+  <div class="container-x">
+    <div class="px-2 sm:px-6 lg:px-10" data-reveal>
+      <p class="font-mono text-[12px] tracking-[0.12em] text-muted-foreground uppercase">B · Genesis</p>
+      <div class="mt-5 grid gap-6 lg:grid-cols-2 lg:items-end">
+        <h2 class="font-display text-[2.4rem] leading-[1.08] font-light tracking-[-0.035em] sm:text-[3.2rem]">Tracing the <span class="accent-italic">form</span></h2>
+        <p class="max-w-md text-[16px] leading-relaxed text-muted-foreground lg:justify-self-end">The mark was built in six steps. Each adds one idea to the last, so nothing in it is decoration.</p>
+      </div>
+    </div>
+
+    <ol class="mt-14 grid grid-cols-2 gap-x-4 gap-y-12 px-2 sm:grid-cols-3 sm:px-6 lg:px-10 xl:grid-cols-6">
+      {
+        steps.map((s, i) => (
+          <li class="border-t border-line pt-5" data-reveal style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+            <span class="font-mono text-[12px] text-muted-foreground">0{i + 1}</span>
+            <div class="relative mt-4 flex h-64 items-center justify-center">
+              <div class="dots fade-dots absolute inset-0" />
+              <svg viewBox="-40 -30 381 588" class="relative h-full w-auto" fill="none" aria-hidden="true">
+                <line x1={axis} y1={-20} x2={axis} y2={548} {...faint} />
+                {i >= 1 && <ellipse cx={axis} cy={widest} rx={rx} ry={ry} {...faint} />}
+                {i >= 2 && (
+                  <>
+                    <line x1={axis} y1={apex} x2={axis - tx * 230} y2={apex + ty * 230} {...faint} />
+                    <line x1={axis} y1={apex} x2={axis + tx * 230} y2={apex + ty * 230} {...faint} />
+                  </>
+                )}
+                {i === 0 && (
+                  <g stroke="#9A9A9A" vector-effect="non-scaling-stroke">
+                    <line x1={axis - 40} y1={apex} x2={axis + 40} y2={apex} />
+                    <circle cx={axis} cy={apex} r="22" fill="#111111" stroke="none" />
+                  </g>
+                )}
+                {i === 1 && (
+                  <>
+                    <ellipse cx={axis} cy={widest} rx={rx} ry={ry} stroke="#111111" stroke-width="5" />
+                    <circle cx={axis} cy={apex} r="16" fill="#111111" />
+                  </>
+                )}
+                {i === 2 && (
+                  <>
+                    <path d={mark.leafRight} stroke="#111111" stroke-width="5" />
+                    <path d={mark.leafLeft} stroke="#111111" stroke-width="5" />
+                  </>
+                )}
+                {i === 3 && <MarkG parts={['leaf']} />}
+                {i === 4 && <MarkG parts={['leaf', 'vein']} />}
+                {i === 5 && <MarkG />}
+              </svg>
+            </div>
+            <h3 class="mt-5 text-[18px] font-light tracking-[-0.01em]">{s.title}</h3>
+            <p class="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

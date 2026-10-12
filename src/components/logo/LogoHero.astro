@@ -1,0 +1,120 @@
+---
+import { PenTool } from '@lucide/astro';
+import MarkG from './MarkG.astro';
+import { mark, facts } from '../../lib/mark';
+
+/*
+ * The mark draws itself from the tip of the leaf, on top of its own construction: the
+ * axis, the ellipse of the leaf's lower half, the tangents that meet at the tip, and
+ * Euclid's two circles that give the nib its equilateral triangle.
+ *
+ * Everything inside the group is in the mark's own units (301 × 528), placed on a
+ * 1200 × 640 stage.
+ */
+const { axis, apex, widest, base, rx, ry, nib, stroke } = mark;
+const ox = 600 - axis;
+const oy = 70;
+
+// Unit direction of the tangents at the tip of the leaf.
+const tx = 130.28 / Math.hypot(130.28, 132.134);
+const ty = 132.134 / Math.hypot(130.28, 132.134);
+const arc = 120;
+const side = nib.right - nib.left;
+
+const chapters = [
+  { id: 'meaning', letter: 'A', label: 'Meaning' },
+  { id: 'genesis', letter: 'B', label: 'Genesis' },
+  { id: 'geometry', letter: 'C', label: 'Geometry' },
+  { id: 'perception', letter: 'D', label: 'Perception' },
+  { id: 'dimension', letter: 'E', label: 'Dimension' },
+  { id: 'system', letter: 'F', label: 'System' },
+];
+---
+
+<section class="relative overflow-hidden">
+  <div class="container-text pt-20 text-center sm:pt-28">
+    <p class="chip"><span class="chip-icon"><PenTool class="size-3.5" /></span>The Rachna mark</p>
+    <h1 class="mx-auto mt-7 max-w-3xl font-display text-[2.6rem] leading-[1.08] font-light tracking-[-0.035em] text-ink sm:text-[3.5rem] lg:text-[4rem]">
+      A leaf that learned to <span class="accent-italic">write</span>
+    </h1>
+    <p class="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
+      Our mark is one line. It begins as a leaf, the life we study, and ends as a pen nib, the work we write and build. This is the thinking behind it: its meaning, its geometry and how the mind reads it.
+    </p>
+  </div>
+
+  <div class="blueprint relative mx-auto mt-6 h-[560px] max-w-[1200px] sm:aspect-[1200/680] sm:h-auto" aria-hidden="true">
+    <div class="dots fade-dots absolute inset-0"></div>
+    <svg viewBox="0 0 1200 680" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 size-full" fill="none">
+      <g transform={`translate(${ox} ${oy})`}>
+        <g class="construct" stroke="#D2D2D2" stroke-width="1" vector-effect="non-scaling-stroke">
+          <line x1={axis} y1={-60} x2={axis} y2={600} stroke-dasharray="4 6" />
+          {[apex, widest, base, nib.tip].map((y) => <line x1={-260} y1={y} x2={560} y2={y} stroke="#E6E6E6" stroke-dasharray="2 6" />)}
+          <ellipse cx={axis} cy={widest} rx={rx} ry={ry} stroke-dasharray="5 5" />
+          <line x1={axis} y1={apex} x2={axis - tx * 300} y2={apex + ty * 300} stroke-dasharray="5 5" />
+          <line x1={axis} y1={apex} x2={axis + tx * 300} y2={apex + ty * 300} stroke-dasharray="5 5" />
+          <path d={`M${axis - tx * arc} ${apex + ty * arc} A${arc} ${arc} 0 0 0 ${axis + tx * arc} ${apex + ty * arc}`} stroke="#9A9A9A" />
+          <circle cx={nib.left} cy={nib.top} r={side} stroke-dasharray="3 5" />
+          <circle cx={nib.right} cy={nib.top} r={side} stroke-dasharray="3 5" />
+
+          <!-- a : b, the golden division of the leaf -->
+          <g stroke="#9A9A9A">
+            <line x1={-80} y1={apex} x2={-80} y2={base} />
+            {[apex, widest, base].map((y) => <line x1={-88} y1={y} x2={-72} y2={y} />)}
+            <!-- width -->
+            <line x1={0} y1={-30} x2={300.6} y2={-30} />
+            {[0, 300.6].map((x) => <line x1={x} y1={-38} x2={x} y2={-22} />)}
+            <!-- 3 : 5 -->
+            <line x1={400} y1={apex} x2={400} y2={base} />
+            <line x1={428} y1={nib.apex} x2={428} y2={nib.tip} />
+            {[apex, base].map((y) => <line x1={392} y1={y} x2={408} y2={y} />)}
+            {[nib.apex, nib.tip].map((y) => <line x1={420} y1={y} x2={436} y2={y} />)}
+            <!-- stroke unit x -->
+            <line x1={0} y1={widest + 52} x2={stroke} y2={widest + 52} />
+            {[0, stroke].map((x) => <line x1={x} y1={widest + 46} x2={x} y2={widest + 58} />)}
+          </g>
+        </g>
+
+        <MarkG draw />
+
+        <g class="construct labels font-mono" fill="#8A8A8A" font-size="11" letter-spacing="0.06em">
+          <text x={axis + 92} y={apex + 24}>{facts.apexAngle.toFixed(1)}°</text>
+          <text x={-98} y={(apex + widest) / 2 + 4} text-anchor="end">a</text>
+          <text x={-98} y={(widest + base) / 2 + 4} text-anchor="end">b</text>
+          <text x={-98} y={base + 34} text-anchor="end">a : b = 1 : {facts.leafRatio.toFixed(2)}</text>
+          <text x={-98} y={base + 52} text-anchor="end">φ = 1.618</text>
+          <text x={150.3} y={-44} text-anchor="middle">300.6 = 7.5x</text>
+          <text x={20} y={widest + 76} text-anchor="middle">x</text>
+          <text x={448} y={(apex + base) / 2 + 4}>5</text>
+          <text x={448} y={(nib.apex + nib.tip) / 2 + 4}>3</text>
+          <text x={-98} y={nib.top + 4} text-anchor="end">60° · Euclid, Elements I.1</text>
+          <text x={-260} y={apex - 8}>APEX</text>
+          <text x={-260} y={widest - 8}>WIDEST</text>
+          <text x={-260} y={base - 8}>BASE</text>
+          <text x={-260} y={nib.tip - 8}>NIB</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <nav aria-label="Chapters" class="container-x relative">
+    <ol class="grid grid-cols-3 border-t border-line sm:grid-cols-6">
+      {
+        chapters.map((c) => (
+          <li>
+            <a href={`#${c.id}`} class="group flex items-baseline gap-2 px-2 py-5 text-[14px] text-graphite transition-colors hover:text-ink sm:px-4">
+              <span class="font-mono text-[12px] text-muted-foreground group-hover:text-ink">{c.letter}</span>
+              {c.label}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</section>
+
+<style>
+  .blueprint {
+    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent);
+    mask-image: linear-gradient(to bottom, #000 88%, transparent);
+  }
+</style>
