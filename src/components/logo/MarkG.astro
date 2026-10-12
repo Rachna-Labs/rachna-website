@@ -1,7 +1,7 @@
 ---
 /**
  * The Rachna mark as an SVG group, in its own 301 × 528 coordinates, for use inside a
- * larger drawing. `parts` picks which pieces to draw; `draw` lets the lines draw themselves.
+ * larger drawing. `parts` picks which pieces to draw.
  */
 import { mark } from '../../lib/mark';
 
@@ -11,29 +11,27 @@ interface Props {
   parts?: Part[];
   color?: string;
   transform?: string;
-  draw?: boolean;
   class?: string;
 }
 
-const { parts = ['leaf', 'vein', 'nib'], color = '#111111', transform, draw = false, class: className } = Astro.props;
+const { parts = ['leaf', 'vein', 'nib'], color = '#111111', transform, class: className } = Astro.props;
 const has = (p: Part) => parts.includes(p);
 const line = { stroke: color, 'stroke-width': mark.stroke, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' } as const;
-const len = draw ? 1 : undefined;
 ---
 
 <g class={className} transform={transform}>
   {
     has('leaf') && (
       <>
-        <path d={mark.leafRight} {...line} pathLength={len} class:list={[draw && 'draw draw-leaf']} />
-        <path d={mark.leafLeft} {...line} pathLength={len} class:list={[draw && 'draw draw-leaf']} />
+        <path d={mark.leafRight} {...line} />
+        <path d={mark.leafLeft} {...line} />
       </>
     )
   }
-  {has('vein') && <path d={mark.vein} {...line} pathLength={len} class:list={[draw && 'draw draw-vein']} />}
+  {has('vein') && <path d={mark.vein} {...line} />}
   {
     has('nib') && (
-      <g class:list={[draw && 'draw-nib']} fill={color} stroke={color} stroke-width={mark.nibStroke}>
+      <g fill={color} stroke={color} stroke-width={mark.nibStroke}>
         <path d={mark.nibTop} />
         <path d={mark.nibBottom} />
       </g>
