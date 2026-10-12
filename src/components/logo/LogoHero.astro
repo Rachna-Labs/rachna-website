@@ -48,57 +48,57 @@ const chapters = [
         <g transform={`translate(${ox} ${oy})`}>
           <!-- 1. Guides: the four levels sweep in, the axis drops from above -->
           <g stroke-width="1" vector-effect="non-scaling-stroke">
-            {[apex, widest, base, nib.tip].map((y, i) => <line class="bp-sweep" style={`--d:${0.1 + i * 0.09}s`} x1={-260} y1={y} x2={560} y2={y} stroke="#E4E4E4" stroke-dasharray="2 6" />)}
-            <line class="bp-drop" style="--d:0.15s" x1={axis} y1={-60} x2={axis} y2={600} stroke="#D6D6D6" stroke-dasharray="4 6" />
+            {[apex, widest, base, nib.tip].map((y, i) => <line class="bp-sweep" style={`--d:${i * 0.05}s`} x1={-260} y1={y} x2={560} y2={y} stroke="#E4E4E4" stroke-dasharray="2 6" />)}
+            <line class="bp-drop" style="--d:0.07s" x1={axis} y1={-60} x2={axis} y2={600} stroke="#D6D6D6" stroke-dasharray="4 6" />
           </g>
 
           <!-- 2. Construction: compass and straight edge -->
           <g stroke="#DEDEDE" stroke-width="1" vector-effect="non-scaling-stroke">
-            <line class="bp-draw" style="--d:0.5s;--t:0.9s" pathLength="1" x1={axis} y1={apex} x2={axis - tx * 300} y2={apex + ty * 300} />
-            <line class="bp-draw" style="--d:0.5s;--t:0.9s" pathLength="1" x1={axis} y1={apex} x2={axis + tx * 300} y2={apex + ty * 300} />
-            <path class="bp-draw" style="--d:0.65s;--t:1.4s" pathLength="1" d={`M${axis} ${widest - ry} A${rx} ${ry} 0 1 1 ${axis - 0.01} ${widest - ry}`} />
-            <path class="bp-draw" style="--d:1s;--t:1.2s" pathLength="1" d={`M${nib.x} ${nib.apex}H${nib.right}V${nib.tip}H${nib.left}V${nib.apex}Z`} />
-            <line class="bp-draw" style="--d:1.4s;--t:0.8s" pathLength="1" x1={nib.left - 40} y1={nib.mid} x2={nib.right + 40} y2={nib.mid} />
+            <line class="bp-draw" style="--d:0.2s;--t:0.65s" pathLength="1" x1={axis} y1={apex} x2={axis - tx * 300} y2={apex + ty * 300} />
+            <line class="bp-draw" style="--d:0.2s;--t:0.65s" pathLength="1" x1={axis} y1={apex} x2={axis + tx * 300} y2={apex + ty * 300} />
+            <path class="bp-draw" style="--d:0.26s;--t:0.91s" pathLength="1" d={`M${axis} ${widest - ry} A${rx} ${ry} 0 1 1 ${axis - 0.01} ${widest - ry}`} />
+            <path class="bp-draw" style="--d:0.39s;--t:0.78s" pathLength="1" d={`M${nib.x} ${nib.apex}H${nib.right}V${nib.tip}H${nib.left}V${nib.apex}Z`} />
+            <line class="bp-draw" style="--d:0.59s;--t:0.52s" pathLength="1" x1={nib.left - 40} y1={nib.mid} x2={nib.right + 40} y2={nib.mid} />
           </g>
 
           <!-- 3. The mark: a pencil line from the tip, then ink fills it to full weight -->
           <g stroke="#111111" stroke-linecap="round" stroke-linejoin="round">
-            <path class="mk-line" style="--d:1.15s;--t:1.5s;--i:2.75s" pathLength="1" d={mark.leafRight} stroke-width={stroke} />
-            <path class="mk-line" style="--d:1.15s;--t:1.5s;--i:2.75s" pathLength="1" d={mark.leafLeft} stroke-width={stroke} />
-            <path class="mk-line" style="--d:1.7s;--t:1.15s;--i:2.85s" pathLength="1" d={mark.vein} stroke-width={stroke} />
+            <path class="mk-line" style="--d:0.45s;--t:1.04s;--i:1.56s" pathLength="1" d={mark.leafRight} stroke-width={stroke} />
+            <path class="mk-line" style="--d:0.45s;--t:1.04s;--i:1.56s" pathLength="1" d={mark.leafLeft} stroke-width={stroke} />
+            <path class="mk-line" style="--d:0.78s;--t:0.72s;--i:1.62s" pathLength="1" d={mark.vein} stroke-width={stroke} />
           </g>
           <!-- The nib: traced in pencil, then ink flows down into it from the leaf -->
           <g stroke="#111111" stroke-width="1.6" stroke-linejoin="round">
-            <path class="bp-draw" style="--d:2.3s;--t:0.8s" pathLength="1" d={mark.nibRight} />
-            <path class="bp-draw" style="--d:2.3s;--t:0.8s" pathLength="1" d={mark.nibLeft} />
+            <path class="bp-draw" style="--d:1.23s;--t:0.52s" pathLength="1" d={mark.nibRight} />
+            <path class="bp-draw" style="--d:1.23s;--t:0.52s" pathLength="1" d={mark.nibLeft} />
           </g>
           <clipPath id="nib-flow">
-            <rect class="nib-flow" style="--d:3s" x={nib.left - 10} y={nib.apex - 10} width={nib.right - nib.left + 20} height={nib.tip - nib.apex + 20} />
+            <rect class="nib-flow" style="--d:1.76s" x={nib.left - 10} y={nib.apex - 10} width={nib.right - nib.left + 20} height={nib.tip - nib.apex + 20} />
           </clipPath>
           <g clip-path="url(#nib-flow)" fill="#111111" stroke="#111111" stroke-width={mark.nibStroke}>
             <path d={mark.nibPath} />
           </g>
 
           <!-- 4. Measurements -->
-          <path class="bp-draw" style="--d:3.3s;--t:0.6s" pathLength="1" d={`M${axis - tx * arc} ${apex + ty * arc} A${arc} ${arc} 0 0 0 ${axis + tx * arc} ${apex + ty * arc}`} stroke="#9A9A9A" vector-effect="non-scaling-stroke" />
+          <path class="bp-draw" style="--d:1.95s;--t:0.52s" pathLength="1" d={`M${axis - tx * arc} ${apex + ty * arc} A${arc} ${arc} 0 0 0 ${axis + tx * arc} ${apex + ty * arc}`} stroke="#9A9A9A" vector-effect="non-scaling-stroke" />
           <g stroke="#9A9A9A" stroke-width="1" vector-effect="non-scaling-stroke">
-            <g class="bp-grow" style="--d:3.35s">
+            <g class="bp-grow" style="--d:2.04s">
               <line x1={-80} y1={apex} x2={-80} y2={base} />
               {[apex, widest, base].map((y) => <line x1={-88} y1={y} x2={-72} y2={y} />)}
             </g>
-            <g class="bp-grow" style="--d:3.25s">
+            <g class="bp-grow" style="--d:1.95s">
               <line x1={0} y1={-30} x2={300.6} y2={-30} />
               {[0, 300.6].map((x) => <line x1={x} y1={-38} x2={x} y2={-22} />)}
             </g>
-            <g class="bp-grow" style="--d:3.45s">
+            <g class="bp-grow" style="--d:2.13s">
               <line x1={400} y1={apex} x2={400} y2={base} />
               {[apex, base].map((y) => <line x1={392} y1={y} x2={408} y2={y} />)}
             </g>
-            <g class="bp-grow" style="--d:3.55s">
+            <g class="bp-grow" style="--d:2.22s">
               <line x1={428} y1={nib.apex} x2={428} y2={nib.tip} />
               {[nib.apex, nib.tip].map((y) => <line x1={420} y1={y} x2={436} y2={y} />)}
             </g>
-            <g class="bp-grow" style="--d:3.5s">
+            <g class="bp-grow" style="--d:2.18s">
               <line x1={0} y1={widest + 52} x2={stroke} y2={widest + 52} />
               {[0, stroke].map((x) => <line x1={x} y1={widest + 46} x2={x} y2={widest + 58} />)}
             </g>
@@ -106,18 +106,18 @@ const chapters = [
 
           <g class="font-mono" fill="#8A8A8A" font-size="11" letter-spacing="0.06em">
             {[['APEX', apex], ['WIDEST', widest], ['BASE', base], ['NIB', nib.tip]].map(([t, y], i) => (
-              <text class="bp-rise" style={`--d:${0.3 + i * 0.09}s`} x={-260} y={(y as number) - 8}>{t}</text>
+              <text class="bp-rise" style={`--d:${0.13 + i * 0.05}s`} x={-260} y={(y as number) - 8}>{t}</text>
             ))}
-            <text class="bp-rise" style="--d:3.4s" x={axis + 92} y={apex + 24}><tspan data-count={facts.apexAngle.toFixed(1)} data-dec="1">{facts.apexAngle.toFixed(1)}</tspan>°</text>
-            <text class="bp-rise" style="--d:3.3s" x={150.3} y={-44} text-anchor="middle"><tspan data-count="300.6" data-dec="1">300.6</tspan> = 7.5x</text>
-            <text class="bp-rise" style="--d:3.45s" x={-98} y={(apex + widest) / 2 + 4} text-anchor="end">a</text>
-            <text class="bp-rise" style="--d:3.5s" x={-98} y={(widest + base) / 2 + 4} text-anchor="end">b</text>
-            <text class="bp-rise" style="--d:3.6s" x={-98} y={base + 34} text-anchor="end">a : b = 1 : <tspan data-count={facts.leafRatio.toFixed(2)} data-dec="2">{facts.leafRatio.toFixed(2)}</tspan></text>
-            <text class="bp-rise" style="--d:3.7s" x={-98} y={base + 52} text-anchor="end">φ = 1.618</text>
-            <text class="bp-rise" style="--d:3.75s" x={-98} y={nib.mid + 4} text-anchor="end">one diamond · 9 : 5</text>
-            <text class="bp-rise" style="--d:3.55s" x={20} y={widest + 76} text-anchor="middle">x</text>
-            <text class="bp-rise" style="--d:3.6s" x={448} y={(apex + base) / 2 + 4}>5</text>
-            <text class="bp-rise" style="--d:3.7s" x={448} y={(nib.apex + nib.tip) / 2 + 4}>3</text>
+            <text class="bp-rise" style="--d:2.08s" x={axis + 92} y={apex + 24}><tspan data-count={facts.apexAngle.toFixed(1)} data-dec="1">{facts.apexAngle.toFixed(1)}</tspan>°</text>
+            <text class="bp-rise" style="--d:1.99s" x={150.3} y={-44} text-anchor="middle"><tspan data-count="300.6" data-dec="1">300.6</tspan> = 7.5x</text>
+            <text class="bp-rise" style="--d:2.13s" x={-98} y={(apex + widest) / 2 + 4} text-anchor="end">a</text>
+            <text class="bp-rise" style="--d:2.18s" x={-98} y={(widest + base) / 2 + 4} text-anchor="end">b</text>
+            <text class="bp-rise" style="--d:2.27s" x={-98} y={base + 34} text-anchor="end">a : b = 1 : <tspan data-count={facts.leafRatio.toFixed(2)} data-dec="2">{facts.leafRatio.toFixed(2)}</tspan></text>
+            <text class="bp-rise" style="--d:2.37s" x={-98} y={base + 52} text-anchor="end">φ = 1.618</text>
+            <text class="bp-rise" style="--d:2.41s" x={-98} y={nib.mid + 4} text-anchor="end">one diamond · 9 : 5</text>
+            <text class="bp-rise" style="--d:2.22s" x={20} y={widest + 76} text-anchor="middle">x</text>
+            <text class="bp-rise" style="--d:2.27s" x={448} y={(apex + base) / 2 + 4}>5</text>
+            <text class="bp-rise" style="--d:2.37s" x={448} y={(nib.apex + nib.tip) / 2 + 4}>3</text>
           </g>
         </g>
       </svg>
@@ -164,39 +164,39 @@ const chapters = [
     }
     .bp-play .bp-sweep {
       transform-origin: center;
-      animation: bp-scale-x 1.1s var(--out) var(--d) both;
+      animation: bp-scale-x 0.91s var(--out) var(--d) both;
     }
     .bp-play .bp-drop {
       transform-origin: top;
-      animation: bp-scale-y 1.3s var(--ease) var(--d) both;
+      animation: bp-scale-y 1.04s var(--ease) var(--d) both;
     }
     .bp-play .bp-grow {
       transform-origin: center;
       animation:
-        bp-scale-xy 0.7s var(--out) var(--d) both,
-        bp-fade 0.4s ease var(--d) both;
+        bp-scale-xy 0.59s var(--out) var(--d) both,
+        bp-fade 0.39s ease var(--d) both;
     }
     .bp-play .bp-draw {
       stroke-dasharray: 1 2;
       animation: bp-draw var(--t, 1s) var(--ease) var(--d) both;
     }
     .bp-play .bp-rise {
-      animation: bp-rise 0.7s var(--out) var(--d) both;
+      animation: bp-rise 0.59s var(--out) var(--d) both;
     }
     /* Pencil, then ink: a hairline traces the mark, then swells to the full stroke. */
     .bp-play .mk-line {
       stroke-dasharray: 1 2;
       animation:
         bp-draw var(--t) var(--ease) var(--d) both,
-        mk-ink 1.1s var(--out) var(--i) both;
+        mk-ink 0.78s var(--out) var(--i) both;
     }
     .bp-play .nib-flow {
       transform-box: fill-box;
       transform-origin: top;
-      animation: bp-scale-y 0.9s cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
+      animation: bp-scale-y 0.65s cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
     }
     .replay {
-      animation: bp-fade 0.6s ease 4.4s both;
+      animation: bp-fade 0.6s ease 3s both;
     }
   }
 
@@ -243,7 +243,7 @@ const chapters = [
         window.setTimeout(() => {
           const start = performance.now();
           const tick = (now: number) => {
-            const t = Math.min(1, (now - start) / 1100);
+            const t = Math.min(1, (now - start) / 900);
             const eased = 1 - Math.pow(1 - t, 3);
             el.textContent = (target * eased).toFixed(dec);
             if (t < 1) requestAnimationFrame(tick);
